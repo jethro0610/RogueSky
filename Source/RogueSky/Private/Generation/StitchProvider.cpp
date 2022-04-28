@@ -10,7 +10,7 @@ using namespace GenerationConstants;
 void UStitchProvider::Initialize() {
     TArray<FRuntimeMeshLODProperties> lodProperties;
     lodProperties.Init(FRuntimeMeshLODProperties(), 1);
-    lodProperties[0].ScreenSize = 0.75f;
+    //lodProperties[0].ScreenSize = 0.75f;
     //lodProperties[1].ScreenSize = 0.25f;
     //lodProperties[2].ScreenSize = 0.05f;
 
@@ -336,9 +336,6 @@ FRuntimeMeshCollisionSettings UStitchProvider::GetCollisionSettings() {
 }
 
 bool UStitchProvider::HasCollisionMesh() { 
-    if (chunk->GetState() < ChunkState::HasOctree)
-        return false;
-
     return true; 
 }
 

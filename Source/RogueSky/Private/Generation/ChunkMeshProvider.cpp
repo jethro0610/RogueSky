@@ -10,11 +10,11 @@ using namespace GenerationConstants;
 void UChunkMeshProvider::Initialize() {
     TArray<FRuntimeMeshLODProperties> lodProperties;
     lodProperties.Init(FRuntimeMeshLODProperties(), 1);
-    lodProperties[0].ScreenSize = 0.75f;
+    //lodProperties[0].ScreenSize = 0.75f;
     //lodProperties[1].ScreenSize = 0.25f;
     //lodProperties[2].ScreenSize = 0.05f;
 
-    ConfigureLODs({ lodProperties });
+    ConfigureLODs(lodProperties);
     SetupMaterialSlot(0, FName("Chunk Material"), GetChunkMaterial());
 
     FRuntimeMeshSectionProperties Properties;
@@ -186,9 +186,6 @@ FRuntimeMeshCollisionSettings UChunkMeshProvider::GetCollisionSettings() {
 }
 
 bool UChunkMeshProvider::HasCollisionMesh() { 
-    if (chunk->GetState() < ChunkState::HasOctree)
-        return false;
-
     return true; 
 }
 

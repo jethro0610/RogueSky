@@ -82,21 +82,21 @@ void AChunkManager::Tick(float DeltaTime)
 	for (int8 z = 0; z < CHUNK_COUNT; z++) {
 		chunks[x][y][z]->UpdateChunk();
 	}
-
-	//DrawDebugSphere(GetWorld(), randomLocation, 100.0f, 16.0f, FColor::Red);
-
-
 }
 
 Chunk* AChunkManager::CreateChunk(int8 X, int8 Y, int8 Z) {
+	// @TODO: Hide any chunks that are invisible (nothing in the chunks). This will fix framerate dip from every chunk component rendering at a distance
+
 	// Create the runtime mesh for the chunk
 	URuntimeMeshComponent* newRuntimeMesh = NewObject<URuntimeMeshComponent>(this);
+	newRuntimeMesh->SetMobility(EComponentMobility::Stationary);
 	newRuntimeMesh->RegisterComponent();
 	meshes.Add(newRuntimeMesh);
 	UChunkMeshProvider* meshProvider = NewObject<UChunkMeshProvider>(this);
 
 	// Create the runtime stitch for the chunk
 	URuntimeMeshComponent* newRuntimeStitch = NewObject<URuntimeMeshComponent>(this);
+	newRuntimeStitch->SetMobility(EComponentMobility::Stationary);
 	newRuntimeStitch->RegisterComponent();
 	stitches.Add(newRuntimeMesh);
 	UStitchProvider* stitchProvider = NewObject<UStitchProvider>(this);

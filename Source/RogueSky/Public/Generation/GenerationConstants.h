@@ -55,7 +55,7 @@ namespace GenerationConstants {
         {{0,0,0}, {-1, 0, 0}, { -1, -1, 0}, {0, -1, 0}} // Z
     };
 
-    const uint8 CHUNK_COUNT = 20;
+    const uint8 CHUNK_COUNT = 6;
     const uint8 CHUNK_BOUNDS = CHUNK_COUNT / 2;
 
     const uint16 CHUNK_SIZE = 4096;
