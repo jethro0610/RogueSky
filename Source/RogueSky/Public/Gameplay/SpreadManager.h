@@ -23,8 +23,13 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 		UHierarchicalInstancedStaticMeshComponent* instancedStaticMesh;
+	
+	TArray<bool> spreadPoints;
+	int activatedSpreadPoints;
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void SpawnInstance(FVector Location);
+		int CreateSpreadPoint();
+	UFUNCTION(BlueprintCallable)
+		bool ActivateSpreadPoint(int Index, FTransform Transform);
 };
