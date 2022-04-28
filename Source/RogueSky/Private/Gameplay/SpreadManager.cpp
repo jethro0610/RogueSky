@@ -18,24 +18,25 @@ void ASpreadManager::BeginPlay()
 {
 	Super::BeginPlay();
 	instancedStaticMesh->SetWorldLocation(FVector::ZeroVector);
+	spreadManager = this;
 }
 
-int ASpreadManager::CreateSpreadPoint() {
-	spreadPoints.Add(false);
-	return spreadPoints.Num() - 1;
+int ASpreadManager::CreateSpreadIndex() {
+	spreadIndexes.Add(false);
+	return spreadIndexes.Num() - 1;
 }
 
-bool ASpreadManager::ActivateSpreadPoint(int Index, FTransform Transform) {
-	if (Index >= spreadPoints.Num() || Index < 0)
+bool ASpreadManager::ActivateSpreadIndex(int Index, FTransform Transform) {
+	if (Index >= spreadIndexes.Num() || Index < 0)
 		return false;
 
 	// Return if the spread point is already activated
-	if (spreadPoints[Index] == true)
+	if (spreadIndexes[Index] == true)
 		return false;
 
 	instancedStaticMesh->AddInstance(Transform, true);
-	spreadPoints[Index] = true;
-	activatedSpreadPoints++;
+	spreadIndexes[Index] = true;
+	activatedSpreadIndexes++;
 	return true;
 }
 
