@@ -8,8 +8,38 @@ ARail::ARail() {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    sceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
+    SetRootComponent(sceneComponent);
+
     spline = CreateDefaultSubobject<USplineComponent>("Spline");
-    bounds = CreateDefaultSubobject<UBoxComponent>("Bounds");
+    spline->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetIncludingScale);
+}
+
+void ARail::BeginPlay() {
+    FVector currentLocation = sceneComponent->GetComponentLocation();
+    float inputKey = spline->FindInputKeyClosestToWorldLocation(currentLocation);
+    while (inputKey < spline->GetNumberOfSplinePoints() - 1.0f) { // Loop until end of spline is reached
+        // Step forward based on the length of the collision section
+        FVector splineLocation = spline->GetLocationAtSplineInputKey(inputKey, ESplineCoordinateSpace::World);
+        FVector splineTangent = spline->GetTangentAtSplineInputKey(inputKey, ESplineCoordinateSpace::World).GetSafeNormal();
+        FVector deltaVector = splineTangent * colliderSectionLength;
+        currentLocation = splineLocation + deltaVector;
+
+        // Create the new collider
+        UCapsuleComponent* newCollider = NewObject<UCapsuleComponent>(this);
+        newCollider->SetCapsuleHalfHeight(colliderSectionLength + 15.0f);
+        newCollider->SetCapsuleRadius(railRadius);
+        newCollider->SetWorldLocation(currentLocation);
+        newCollider->SetWorldRotation(splineTangent.Rotation() + FRotator(90.0f, 0.0f, 0.0f));
+        newCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+        newCollider->SetHiddenInGame(false);
+        newCollider->SetVisibility(true);
+        newCollider->RegisterComponent();
+
+        // Step forward for placement of next collider and get the new location on the spline
+        currentLocation += deltaVector;
+        inputKey = spline->FindInputKeyClosestToWorldLocation(currentLocation);
+    }
 }
 
 void ARail::LocationIsTouchingRail(FVector Location, bool& IsTouching, FVector& LocationOnRail) const {

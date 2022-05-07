@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/SplineComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Rail.generated.h"
 
 UCLASS()
@@ -16,14 +17,22 @@ public:
 	// Sets default values for this actor's properties
 	ARail();
 
+	void BeginPlay() override;
+
 private:
+	UPROPERTY(VisibleAnywhere)
+		USceneComponent* sceneComponent;
+
 	UPROPERTY(VisibleAnywhere)
 		USplineComponent* spline;
 
-	UBoxComponent* bounds;
+	TArray<UCapsuleComponent*> colliders;
 
 	UPROPERTY(EditAnywhere)
-		float railRadius = 32.0f;
+		float railRadius = 35.0f;
+
+	UPROPERTY(EditAnywhere)
+		float colliderSectionLength = 75.0f;
 
 public:
 	UFUNCTION(BlueprintPure)
