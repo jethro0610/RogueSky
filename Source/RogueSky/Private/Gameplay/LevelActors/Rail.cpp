@@ -13,41 +13,21 @@ ARail::ARail() {
 
     spline = CreateDefaultSubobject<USplineComponent>("Spline");
     spline->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetIncludingScale);
+
+    collider = CreateDefaultSubobject<UBoxComponent>("Collider");
+    collider->AttachToComponent(spline, FAttachmentTransformRules::SnapToTargetIncludingScale);
 }
 
 void ARail::BeginPlay() {
-    FVector currentLocation = sceneComponent->GetComponentLocation();
-    float inputKey = spline->FindInputKeyClosestToWorldLocation(currentLocation);
-    while (inputKey < spline->GetNumberOfSplinePoints() - 1.0f) { // Loop until end of spline is reached
-        // Step forward based on the length of the collision section
-        FVector splineLocation = spline->GetLocationAtSplineInputKey(inputKey, ESplineCoordinateSpace::World);
-        FVector splineTangent = spline->GetTangentAtSplineInputKey(inputKey, ESplineCoordinateSpace::World).GetSafeNormal();
-        FVector deltaVector = splineTangent * colliderSectionLength;
-        currentLocation = splineLocation + deltaVector;
-
-        // Create the new collider
-        UCapsuleComponent* newCollider = NewObject<UCapsuleComponent>(this);
-        newCollider->SetCapsuleHalfHeight(colliderSectionLength + 15.0f);
-        newCollider->SetCapsuleRadius(railRadius);
-        newCollider->SetWorldLocation(currentLocation);
-        newCollider->SetWorldRotation(splineTangent.Rotation() + FRotator(90.0f, 0.0f, 0.0f));
-        newCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-        newCollider->SetHiddenInGame(false);
-        newCollider->SetVisibility(true);
-        newCollider->RegisterComponent();
-
-        // Step forward for placement of next collider and get the new location on the spline
-        currentLocation += deltaVector;
-        inputKey = spline->FindInputKeyClosestToWorldLocation(currentLocation);
-    }
+    collider->SetBoxExtent(spline->GetLocalBounds().BoxExtent);
+    collider->SetRelativeLocation(spline->GetLocalBounds().Origin);
 }
 
 void ARail::LocationIsTouchingRail(FVector Location, bool& IsTouching, FVector& LocationOnRail) const {
     IsTouching = false;
-    FVector splineLocation = spline->FindLocationClosestToWorldLocation(Location, ESplineCoordinateSpace::World);
-    if (FVector::Dist(splineLocation, Location) <= railRadius) {
+    LocationOnRail = spline->FindLocationClosestToWorldLocation(Location, ESplineCoordinateSpace::World);
+    if (FVector::Dist(LocationOnRail, Location) <= railRadius) {
         IsTouching = true;
-        LocationOnRail = splineLocation;
     }
 }
 

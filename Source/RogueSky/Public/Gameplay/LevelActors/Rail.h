@@ -26,10 +26,11 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		USplineComponent* spline;
 
-	TArray<UCapsuleComponent*> colliders;
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* collider;
 
 	UPROPERTY(EditAnywhere)
-		float railRadius = 35.0f;
+		float railRadius = 150.0f;
 
 	UPROPERTY(EditAnywhere)
 		float colliderSectionLength = 75.0f;

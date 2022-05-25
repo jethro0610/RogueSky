@@ -15,7 +15,11 @@ class ROGUESKY_API URailMover : public UMover {
 	GENERATED_BODY()
 	
 public:
+    URailMover();
 	void BeginPlay() override;
+
+protected:
+    void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	ARail* rail;
@@ -35,4 +39,8 @@ private:
         AActor* OtherActor,
         UPrimitiveComponent* OtherComp,
         int32 OtherBodyIndex);
+
+    void StartRailMovement(ARail* RailToMoveOn, FVector MoveStartLocation);
+    void OnActivate_Implementation(FVector DesiredMovement) override;
+    void OnDeactivate_Implementation() override;
 };
