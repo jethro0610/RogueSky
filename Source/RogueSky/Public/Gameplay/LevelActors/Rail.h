@@ -37,8 +37,14 @@ private:
 
 public:
 	UFUNCTION(BlueprintPure)
-		void LocationIsTouchingRail(FVector Location, bool& IsTouching, FVector& LocationOnRail) const;
+		void LocationIsTouchingRail(FVector Location, bool& IsTouching, FTransform& TransformOnRail) const;
 
 	UFUNCTION(BlueprintPure)
-		FTransform GetTransformAlongRail(FVector Location, FVector Velocity) const;
+		FTransform GetTransformAlongRail(FVector Location) const;
+
+	UFUNCTION(BlueprintPure)
+		FVector GetStartpoint() const;
+
+	UFUNCTION(BlueprintPure)
+		FVector GetEndpoint() const;
 };

@@ -23,24 +23,23 @@ void ARail::BeginPlay() {
     collider->SetRelativeLocation(spline->GetLocalBounds().Origin);
 }
 
-void ARail::LocationIsTouchingRail(FVector Location, bool& IsTouching, FVector& LocationOnRail) const {
+void ARail::LocationIsTouchingRail(FVector Location, bool& IsTouching, FTransform& TransformOnRail) const {
     IsTouching = false;
-    LocationOnRail = spline->FindLocationClosestToWorldLocation(Location, ESplineCoordinateSpace::World);
-    if (FVector::Dist(LocationOnRail, Location) <= railRadius) {
+    TransformOnRail = spline->FindTransformClosestToWorldLocation(Location, ESplineCoordinateSpace::World);
+    if (FVector::Dist(TransformOnRail.GetLocation(), Location) <= railRadius) {
         IsTouching = true;
     }
 }
 
-FTransform ARail::GetTransformAlongRail(FVector Location, FVector Velocity) const {
-    FTransform splineTransform = spline->FindTransformClosestToWorldLocation(Location, ESplineCoordinateSpace::World);
-    FVector splineTangent = splineTransform.GetRotation().Vector();
+FTransform ARail::GetTransformAlongRail(FVector Location) const {
+    return spline->FindTransformClosestToWorldLocation(Location, ESplineCoordinateSpace::World);
+}
 
-    FVector deltaLocation;
-    if (FVector::DotProduct(Velocity.GetSafeNormal(), splineTangent) >= 0)
-        deltaLocation = splineTangent * Velocity.Size();
-    else
-        deltaLocation = splineTangent * -Velocity.Size();
+FVector ARail::GetStartpoint() const {
+    return spline->GetLocationAtSplineInputKey(0.0f, ESplineCoordinateSpace::World);
+}
 
-    return spline->FindTransformClosestToWorldLocation(splineTransform.GetLocation() + deltaLocation, ESplineCoordinateSpace::World);
+FVector ARail::GetEndpoint() const {
+    return spline->GetLocationAtTime(spline->GetNumberOfSplinePoints() - 1.0f, ESplineCoordinateSpace::World);
 }
 
