@@ -50,7 +50,7 @@ FVector Chunk::GetVertexLocation(int8 X, int8 Y, int8 Z, uint8 LODLevel) const {
     if (LODLevel == 0)
         return GetVertexLocation(X, Y, Z);
 
-    int lodUnitSize = FMath::Exp2(LODLevel);
+    uint8 lodUnitSize = FMath::Exp2((float)LODLevel);
 
     FVector vectorSum = FVector::ZeroVector;
     int totalVectors = 0;

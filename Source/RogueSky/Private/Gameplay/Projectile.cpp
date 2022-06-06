@@ -22,9 +22,9 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	TArray<UActorComponent*> hitboxComponents = GetComponentsByClass(UHitbox::StaticClass());
-	for (UActorComponent* hitboxComponent : hitboxComponents) {
-		UHitbox* hitbox = Cast<UHitbox>(hitboxComponent);
+	TArray<UHitbox*> hitboxComponents;
+	GetComponents<UHitbox>(hitboxComponents);
+	for (UHitbox* hitbox : hitboxComponents) {
 		hitbox->OnHit.AddDynamic(this, &AProjectile::OnHit);
 		hitboxes.Add(Cast<UHitbox>(hitbox));
 	}

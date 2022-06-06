@@ -22,7 +22,7 @@ FFloat16 DistanceField::GetDistance(int8 X, int8 Y, int8 Z, uint8 LODLevel) cons
     if (LODLevel == 0)
         return GetDistance(X, Y, Z);
 
-    const uint8 lodUnitSize = FMath::Exp2(LODLevel);
+    const uint8 lodUnitSize = FMath::Exp2((float)LODLevel);
     return GetDistance(X * lodUnitSize, Y * lodUnitSize, Z * lodUnitSize);
 }
 
@@ -43,7 +43,7 @@ FVector DistanceField::GetNormal(int8 X, int8 Y, int8 Z, uint8 LODLevel) const {
     if (LODLevel == 0)
         return GetNormal(X, Y, Z);
 
-    const uint8 lodUnitSize = FMath::Exp2(LODLevel);
+    const uint8 lodUnitSize = FMath::Exp2((float)LODLevel);
     return GetNormal(X * lodUnitSize, Y * lodUnitSize, Z * lodUnitSize);
 }
 

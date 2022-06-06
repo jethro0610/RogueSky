@@ -94,7 +94,7 @@ void UStitchProvider::SetStitchMaterial(UMaterialInterface* Material) {
 }
 
 void UStitchProvider::GenerateStitchVertsAndTris(uint8 LODLevel, bool CalculateNormals, int& VertCount, TFunctionRef<void(FVector Location, FVector Normal)> VertexFunction, TFunctionRef<void(int32 TriangleIndicies[3])> TriFunction) {
-    const int lodChunkResolution = FMath::Exp2(MAX_LOD_DEPTH - LODLevel);
+    const int lodChunkResolution = FMath::Exp2((float)MAX_LOD_DEPTH - LODLevel);
     for (int s = 0; s < 3; s++) { // Check all negative chunk borders
         // Skip this stitch if there's no adjacent chunk at the border
         const Chunk* oppositeChunk = chunk->GetChunkManager()->GetChunk(chunk->GetLocation() + stitchTable[s]);
@@ -236,7 +236,7 @@ void UStitchProvider::GenerateStitchVertsAndTris(uint8 LODLevel, bool CalculateN
 }
 
 void UStitchProvider::GenerateCornerVertsAndTris(uint8 LODLevel, bool CalculateNormals, int& VertCount, TFunctionRef<void(FVector Location, FVector Normal)> VertexFunction, TFunctionRef<void(int32 TriangleIndicies[3])> TriFunction) {
-    const int lodChunkResolution = FMath::Exp2(MAX_LOD_DEPTH - LODLevel);
+    const int lodChunkResolution = FMath::Exp2((float)MAX_LOD_DEPTH - LODLevel);
     for (int c = 0; c < 3; c++) { // Loop through every corner of the chunk
         // Get all the chunks on the corner edges using the planar triangulation table
         const Chunk* cornerChunks[4] = { nullptr };

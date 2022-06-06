@@ -11,7 +11,7 @@ Placer::~Placer() {
 void Placer::Place(IslandGenerator& Generator, UWorld* World) {
     BlobMask blobMask = Generator.GetBlobMask();
 
-    int startAngleToEdge = FMath::Rand();
+    float startAngleToEdge = FMath::Rand();
     FVector2D startEdgeDirection = FVector2D(FMath::Cos(startAngleToEdge), FMath::Sin((float)startAngleToEdge));
     float startEdgeDistance = blobMask.GetEdgeDistanceFromOrigin(startEdgeDirection);
 

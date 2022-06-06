@@ -91,7 +91,7 @@ void UChunkMeshProvider::SetChunkMaterial(UMaterialInterface* Material) {
 }
 
 void UChunkMeshProvider::GenerateVerts(TMap<FIntVector8, int>& IndexMap, int LODLevel, bool CalculateNormals, TFunctionRef<void(FVector Location, FVector Normal)> AddFunction) {
-    const int lodChunkResolution = FMath::Exp2(MAX_LOD_DEPTH - LODLevel);
+    const int lodChunkResolution = FMath::Exp2((float)MAX_LOD_DEPTH - LODLevel);
     int vertCount = 0;
     for (int x = 0; x < lodChunkResolution; x++)
     for (int y = 0; y < lodChunkResolution; y++)
@@ -111,7 +111,7 @@ void UChunkMeshProvider::GenerateVerts(TMap<FIntVector8, int>& IndexMap, int LOD
 }
 
 void UChunkMeshProvider::GenerateTris(TMap<FIntVector8, int>& IndexMap, int LODLevel, TFunctionRef<void(int32 TriangleIndices[6])> AddFunction) {
-    const int lodChunkResolution = FMath::Exp2(MAX_LOD_DEPTH - LODLevel);
+    const int lodChunkResolution = FMath::Exp2((float)MAX_LOD_DEPTH - LODLevel);
     for (int x = 0; x < lodChunkResolution; x++)
     for (int y = 0; y < lodChunkResolution; y++)
     for (int z = 0; z < lodChunkResolution; z++) {

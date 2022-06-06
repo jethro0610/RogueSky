@@ -15,7 +15,7 @@ void SpreadPlacer::Place() {
         if (!generator->GetBlobMask().PointIsInBlob(spawnPoint, 1500.0f))
             continue;
 
-        int randomAngle = FMath::Rand();
+        float randomAngle = FMath::Rand();
         FVector2D randomDireciton = FVector2D(FMath::Cos(randomAngle), FMath::Sin((float)randomAngle));
         float randomDistance = (FMath::Rand() / (float)RAND_MAX) * distanceBetweenPlacements * 0.5f;
 
