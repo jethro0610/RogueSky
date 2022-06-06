@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Generation/Allocators/AllocatorNode.h"
+#include "Generation/Allocators/AllocatorGraph.h"
 #include "Allocator.generated.h"
 
 /**
@@ -37,6 +38,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		float placementRange = 10.0f;
 
+	UPROPERTY()
+		UAllocatorGraph* delauneyGraph = nullptr;
+
 public:
 	UFUNCTION(BlueprintCallable)
 		void PlaceRandomNodes(int NumberOfNodes);
@@ -44,6 +48,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void AllocateNodes();
 
+	UFUNCTION(BlueprintCallable)
+		void CreateDelauneyGraph();
+
 	UFUNCTION(BlueprintPure)
 		TArray<UAllocatorNode*> GetNodes() const { return nodes; }
+
+	UFUNCTION(BlueprintPure)
+		UAllocatorGraph* GetDelauneyGraph() const { return delauneyGraph; }
 };

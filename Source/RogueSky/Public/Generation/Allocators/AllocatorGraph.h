@@ -14,4 +14,11 @@ class ROGUESKY_API UAllocatorGraph : public UObject
 
 private:
 	TArray<FAllocatorEdge> edges;
+
+public:
+	UFUNCTION(BlueprintCallable)
+		void AddEdge(FAllocatorEdge edge) { edges.Add(edge); }
+
+	UFUNCTION(BlueprintPure)
+		TArray<FAllocatorEdge> GetEdges() const { return edges; }
 };
