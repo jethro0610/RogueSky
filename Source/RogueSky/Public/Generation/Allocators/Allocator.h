@@ -41,6 +41,8 @@ private:
 	UPROPERTY()
 		UAllocatorGraph* delauneyGraph = nullptr;
 
+	const float SUPER_TRIANGLE_RANGE = 65536;
+
 public:
 	UFUNCTION(BlueprintCallable)
 		void PlaceRandomNodes(int NumberOfNodes);

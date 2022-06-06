@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Allocators/Allocator.h"
+#include "Math/NumericLimits.h"
 #include "Math/UnrealMathUtility.h"
 
 void UAllocator::PlaceRandomNodes(int NumberOfNodes) {
@@ -37,20 +38,22 @@ void UAllocator::CreateDelauneyGraph() {
 
     TArray<FAllocatorTriangle> triangles;
 
+    // Create the super triangle that surrounds all nodes
     UAllocatorNode* superNodes[3];
     superNodes[0] = NewObject<UAllocatorNode>();
-    superNodes[0]->Initialize(FVector2D(-65536, -65536), 0.0f, 0.0f);
+    superNodes[0]->Initialize(FVector2D(-SUPER_TRIANGLE_RANGE, -SUPER_TRIANGLE_RANGE), 0.0f, 0.0f);
 
     superNodes[1] = NewObject<UAllocatorNode>();
-    superNodes[1]->Initialize(FVector2D(0, 65536), 0.0f, 0.0f);
+    superNodes[1]->Initialize(FVector2D(0, SUPER_TRIANGLE_RANGE), 0.0f, 0.0f);
 
     superNodes[2] = NewObject<UAllocatorNode>();
-    superNodes[2]->Initialize(FVector2D(65536, -65536), 0.0f, 0.0f);
+    superNodes[2]->Initialize(FVector2D(SUPER_TRIANGLE_RANGE, -SUPER_TRIANGLE_RANGE), 0.0f, 0.0f);
     FAllocatorTriangle superTriangle = FAllocatorTriangle(superNodes[0], superNodes[1], superNodes[2]);
 
     triangles.Add(superTriangle);
 
     for (UAllocatorNode* node : nodes) {
+        // Find all triangles that the current node is inside
         TArray<FAllocatorTriangle> trianglesToRemove;
         for (FAllocatorTriangle triangle : triangles) {
             FVector2D circleOrigin;
@@ -61,9 +64,11 @@ void UAllocator::CreateDelauneyGraph() {
                 trianglesToRemove.Add(triangle);
         }
 
+        // Form a polygon from any triangles that contain the point
         TArray<FAllocatorEdge> polygon;
         for (FAllocatorTriangle badTriangle : trianglesToRemove) {
             for (FAllocatorEdge edge : badTriangle.edges) {
+                // Only add unshared edges. This ensures that redundant triangles are removed
                 bool shouldAddEdge = true;
                 for (FAllocatorTriangle other : trianglesToRemove) {
                     if (badTriangle == other)
@@ -79,12 +84,14 @@ void UAllocator::CreateDelauneyGraph() {
             triangles.Remove(badTriangle);
         }
 
+        // Create new triangles from each of the polygon edges
         for (FAllocatorEdge edge : polygon) {
             FAllocatorTriangle newTriangle = FAllocatorTriangle::CreateTriangleFromNodeAndEdge(node, edge);
             triangles.Add(newTriangle);
         }
     }
 
+    // Find any edges with a super triangle and remove them from the graph
     TSet<FAllocatorTriangle> trianglesWithSuperNode;
     for (FAllocatorTriangle triangle : triangles)
     for (FAllocatorEdge edge : triangle.edges) 
@@ -94,16 +101,17 @@ void UAllocator::CreateDelauneyGraph() {
                 trianglesWithSuperNode.Add(triangle);
         }
     }
-
     for (FAllocatorTriangle triangle : trianglesWithSuperNode)
         triangles.Remove(triangle);
 
+    // Create the Delauney graph using the edges from the triangulation
     delauneyGraph = NewObject<UAllocatorGraph>(this);
     for (FAllocatorTriangle triangle : triangles)
     for (FAllocatorEdge edge : triangle.edges) {
         delauneyGraph->AddEdge(edge);
     }
 
+    // Queue the super nodes for destruction
     superNodes[0]->MarkAsGarbage();
     superNodes[1]->MarkAsGarbage();
     superNodes[2]->MarkAsGarbage();
