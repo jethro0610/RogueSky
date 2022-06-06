@@ -19,8 +19,8 @@ ARail::ARail() {
 }
 
 void ARail::BeginPlay() {
-    collider->SetBoxExtent(spline->GetLocalBounds().BoxExtent);
-    collider->SetRelativeLocation(spline->GetLocalBounds().Origin);
+    UpdateBounds();
+    CreateMeshes();
 }
 
 void ARail::LocationIsTouchingRail(FVector Location, bool& IsTouching, FTransform& TransformOnRail) const {
@@ -41,5 +41,26 @@ FVector ARail::GetStartpoint() const {
 
 FVector ARail::GetEndpoint() const {
     return spline->GetLocationAtTime(spline->GetNumberOfSplinePoints() - 1.0f, ESplineCoordinateSpace::World);
+}
+
+void ARail::UpdateBounds() {
+    collider->SetBoxExtent(spline->GetLocalBounds().BoxExtent);
+    collider->SetRelativeLocation(spline->GetLocalBounds().Origin);
+}
+
+void ARail::CreateMeshes() {
+    for (int i = 0; i < spline->GetNumberOfSplinePoints() - 1; i++) {
+        USplineMeshComponent* newMesh = NewObject<USplineMeshComponent>(this);
+        newMesh->SetStaticMesh(mesh);
+        newMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+        FVector startVector = spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World);
+        FVector startTangent = spline->GetTangentAtSplinePoint(i, ESplineCoordinateSpace::World);
+        FVector endVector = spline->GetLocationAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
+        FVector endTangent = spline->GetTangentAtSplinePoint(i + 1, ESplineCoordinateSpace::World);
+
+        newMesh->SetStartAndEnd(startVector, startTangent, endVector, endTangent);
+        newMesh->RegisterComponent();
+    }
 }
 

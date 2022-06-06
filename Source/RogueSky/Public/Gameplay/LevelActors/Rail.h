@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 #include "Components/BoxComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "Rail.generated.h"
 
 UCLASS()
@@ -33,7 +33,9 @@ private:
 		float railRadius = 150.0f;
 
 	UPROPERTY(EditAnywhere)
-		float colliderSectionLength = 75.0f;
+		UStaticMesh* mesh;
+
+	TArray<USplineMeshComponent> meshes;
 
 public:
 	UFUNCTION(BlueprintPure)
@@ -47,4 +49,10 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		FVector GetEndpoint() const;
+
+	UFUNCTION(BlueprintCallable)
+		void UpdateBounds();
+
+	UFUNCTION(BlueprintCallable)
+		void CreateMeshes();
 };
