@@ -7,18 +7,31 @@
 #include "Generation/Allocators/AllocatorNode.h"
 #include "AllocatorGraph.generated.h"
 
-UCLASS()
-class ROGUESKY_API UAllocatorGraph : public UObject
-{
+USTRUCT(BlueprintType)
+struct FAllocatorGraph {
 	GENERATED_BODY()
 
-private:
-	TArray<FAllocatorEdge> edges;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<FAllocatorEdge> edges;
+};
+
+UCLASS()
+class UAllocatorGraphFunctions : public UBlueprintFunctionLibrary {
+	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-		void AddEdge(FAllocatorEdge edge) { edges.Add(edge); }
+	UFUNCTION(BlueprintPure)
+		static void GetNodesInGraph(const FAllocatorGraph& Graph, TSet<UAllocatorNode*>& Nodes);
 
 	UFUNCTION(BlueprintPure)
-		TArray<FAllocatorEdge> GetEdges() const { return edges; }
+		static void GetEdgesConnectedToNode(const FAllocatorGraph& Graph, UAllocatorNode* Node, TArray<FAllocatorEdge>& OutEdges);
+
+	UFUNCTION(BlueprintPure)
+		static UAllocatorNode* GetNodeFromEdge(uint8 Index, const FAllocatorEdge& Edge) { return Edge.nodes[Index]; }
+
+	UFUNCTION(BlueprintPure)
+		static float GetEdgeLength(const FAllocatorEdge& Edge);
+
+	UFUNCTION(BlueprintPure)
+		static FAllocatorGraph GetMinimumSpanningTree(const FAllocatorGraph& Graph);
 };

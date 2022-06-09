@@ -121,7 +121,4 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		float GetRadius() const { return radius; }
-
-	UFUNCTION(BlueprintPure, Category = "Graph")
-		static UAllocatorNode* GetNodeFromEdge(uint8 Index, FAllocatorEdge Edge) { return Edge.nodes[Index]; }
 };

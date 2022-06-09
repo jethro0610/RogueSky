@@ -39,7 +39,10 @@ private:
 		float placementRange = 10.0f;
 
 	UPROPERTY()
-		UAllocatorGraph* delauneyGraph = nullptr;
+		FAllocatorGraph delauneyGraph;
+
+	UPROPERTY()
+		FAllocatorGraph minimumSpanningTree;
 
 	const float SUPER_TRIANGLE_RANGE = 65536;
 
@@ -51,11 +54,14 @@ public:
 		void AllocateNodes();
 
 	UFUNCTION(BlueprintCallable)
-		void CreateDelauneyGraph();
+		void UpdateGraphs();
 
 	UFUNCTION(BlueprintPure)
 		TArray<UAllocatorNode*> GetNodes() const { return nodes; }
 
 	UFUNCTION(BlueprintPure)
-		UAllocatorGraph* GetDelauneyGraph() const { return delauneyGraph; }
+		FAllocatorGraph GetDelauneyGraph() const { return delauneyGraph; }
+
+	UFUNCTION(BlueprintPure)
+		FAllocatorGraph GetMinimumSpanningTree() const { return minimumSpanningTree; }
 };

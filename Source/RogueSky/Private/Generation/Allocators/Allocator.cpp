@@ -32,10 +32,7 @@ void UAllocator::AllocateNodes() {
     }
 }
 
-void UAllocator::CreateDelauneyGraph() {
-    if (delauneyGraph != nullptr)
-        delauneyGraph->MarkAsGarbage();
-
+void UAllocator::UpdateGraphs() {
     TArray<FAllocatorTriangle> triangles;
 
     // Create the super triangle that surrounds all nodes
@@ -105,11 +102,13 @@ void UAllocator::CreateDelauneyGraph() {
         triangles.Remove(triangle);
 
     // Create the Delauney graph using the edges from the triangulation
-    delauneyGraph = NewObject<UAllocatorGraph>(this);
     for (FAllocatorTriangle triangle : triangles)
     for (FAllocatorEdge edge : triangle.edges) {
-        delauneyGraph->AddEdge(edge);
+        delauneyGraph.edges.Add(edge);
     }
+
+    // Create the minimum spanning tree from the newly generated delauney graph
+    minimumSpanningTree = UAllocatorGraphFunctions::GetMinimumSpanningTree(delauneyGraph);
 
     // Queue the super nodes for destruction
     superNodes[0]->MarkAsGarbage();

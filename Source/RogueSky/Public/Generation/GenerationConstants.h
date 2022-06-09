@@ -62,7 +62,7 @@ namespace GenerationConstants {
     const uint8 MAX_CHUNK_RESOLUTION = 32;
     const uint16 VOXEL_SIZE = CHUNK_SIZE / MAX_CHUNK_RESOLUTION;
     const uint8 DISTANCE_FIELD_SIZE = MAX_CHUNK_RESOLUTION + 1;
-    const uint8 MAX_LOD_DEPTH = FMath::Log2(MAX_CHUNK_RESOLUTION);
+    const uint8 MAX_LOD_DEPTH = FMath::Log2((uint8)MAX_CHUNK_RESOLUTION);
 
     static FVector ChunkCoordinateToWorld(int ChunkX, int ChunkY, int ChunkZ, int X, int Y, int Z) {
         return FVector(ChunkX * CHUNK_SIZE + X * VOXEL_SIZE, ChunkY * CHUNK_SIZE + Y * VOXEL_SIZE, ChunkZ * CHUNK_SIZE + Z * VOXEL_SIZE);
