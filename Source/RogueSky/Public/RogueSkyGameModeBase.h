@@ -20,7 +20,7 @@ public:
 
 private:
 	// Called when the game starts or when spawned
-	void StartPlay() override;
+	void PreInitializeComponents() override;
 
 public:
 	// Called every frame

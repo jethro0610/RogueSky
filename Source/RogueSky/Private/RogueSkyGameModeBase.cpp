@@ -9,8 +9,8 @@ ARogueSkyGameModeBase::ARogueSkyGameModeBase() {
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ARogueSkyGameModeBase::StartPlay() {
-	Super::StartPlay();
+void ARogueSkyGameModeBase::PreInitializeComponents() {
+	Super::PreInitializeComponents();
 	
 	chunkManager = Cast<AChunkManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AChunkManager::StaticClass()));
 	spreadManager = Cast<ASpreadManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ASpreadManager::StaticClass()));

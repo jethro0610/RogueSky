@@ -3,11 +3,11 @@
 #include "Math/NumericLimits.h"
 #include "Math/UnrealMathUtility.h"
 
-void UAllocator::PlaceRandomNodes(int NumberOfNodes) {
+void UAllocator::PlaceRandomNodes(int NumberOfNodes, float MinRadius, float MaxRadius, float MinDistance, float MaxDistance, FVector2D Origin) {
     for (int i = 0; i < NumberOfNodes; i++) {
-        FVector2D location = FVector2D(FMath::RandRange(-placementRange, placementRange), FMath::RandRange(-placementRange, placementRange));
-        float radius = FMath::RandRange(minRadius, maxRadius);
-        float distance = FMath::RandRange(minDist, maxDist);
+        FVector2D location = FVector2D(FMath::RandRange(-10.0f, 10.0f), FMath::RandRange(-10.0f, 10.0f));
+        float radius = FMath::RandRange(MinRadius, MaxRadius);
+        float distance = FMath::RandRange(MinDistance, MaxDistance);
 
         UAllocatorNode* newNode = NewObject<UAllocatorNode>(this);
         newNode->Initialize(location, radius, distance);

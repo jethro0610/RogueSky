@@ -111,6 +111,9 @@ FString Chunk::ChunkStateToString() const {
     case HasDistanceField:
         return "Has Distance Field";
 
+    case DistanceFieldWait:
+        return "Distance Field Wait";
+
     case GeneratingOctree:
         return "Generating Octree";
 

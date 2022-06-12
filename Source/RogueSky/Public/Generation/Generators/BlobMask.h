@@ -30,7 +30,7 @@ public:
 	int8 GetStartChunkX() const { return startChunk.X; }
 	int8 GetStartChunkY() const { return startChunk.Y; }
 	int8 GetEndChunkX() const { return endChunk.X; }
-	int8 GetEndChunkY() const { return endChunk.X; }
+	int8 GetEndChunkY() const { return endChunk.Y; }
 
 	FVector2D GetOrigin() const { return origin; }
 	float GetEdgeDistanceFromOrigin(FVector2D Direction) const;

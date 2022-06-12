@@ -16,43 +16,16 @@ AChunkManager::AChunkManager()
 }
 
 // Called when the game starts or when spawned
-void AChunkManager::BeginPlay()
-{
+void AChunkManager::BeginPlay() {
 	Super::BeginPlay();
 	Chunk::SetChunkManager(this);
 
 	// Create the chunks	
 	for (int8 x = -CHUNK_BOUNDS; x < CHUNK_BOUNDS; x++)
 	for (int8 y = -CHUNK_BOUNDS; y < CHUNK_BOUNDS; y++)
-	for (int8 z = -CHUNK_BOUNDS; z < CHUNK_BOUNDS; z++) {
+	for (int8 z = -Z_CHUNK_BOUNDS; z < Z_CHUNK_BOUNDS; z++) {
 		CreateChunk(x, y, z);
 	}
-
-	IslandProperties islandProperties;
-	islandProperties.origin = FVector::ZeroVector;
-	IslandGenerator islandGenerator(islandProperties);
-	islandGenerator.Generate();
-
-	randomLocation = islandGenerator.GetRandomLocationOnSurface();
-
-	for (auto pair : islandGenerator.distanceFields) {
-		Chunk* chunk = GetChunk(pair.Key);
-		if (chunk == nullptr)
-			continue;
-
-		chunk->distanceField.AddDistanceField(pair.Value);
-		chunk->SetState(ChunkState::HasDistanceField);
-	}
-	
-	SpreadPlacer placer;
-	placer.startPoint = FVector2D(islandProperties.origin) - FVector2D(islandProperties.maxRadius, islandProperties.maxRadius);
-	placer.endPoint = FVector2D(islandProperties.origin) + FVector2D(islandProperties.maxRadius, islandProperties.maxRadius);
-	placer.actorToPlace = actorToPlace;
-	placer.generator = &islandGenerator;
-	placer.distanceBetweenPlacements = 150.0f;
-	placer.world = GetWorld();
-
-	placer.Place();
 }
 
 void AChunkManager::BeginDestroy() {
@@ -60,7 +33,7 @@ void AChunkManager::BeginDestroy() {
 	Chunk::ClearChunkManager();
 	for (int8 X = 0; X < CHUNK_COUNT; X++)
 	for (int8 Y = 0; Y < CHUNK_COUNT; Y++)
-	for (int8 Z = 0; Z < CHUNK_COUNT; Z++) {
+	for (int8 Z = 0; Z < Z_CHUNK_COUNT; Z++) {
 		delete chunks[X][Y][Z];
 	}
 
@@ -79,7 +52,7 @@ void AChunkManager::Tick(float DeltaTime)
 	// Update the chunks
 	for (int8 x = 0; x < CHUNK_COUNT; x++)
 	for (int8 y = 0; y < CHUNK_COUNT; y++)
-	for (int8 z = 0; z < CHUNK_COUNT; z++) {
+	for (int8 z = 0; z < Z_CHUNK_COUNT; z++) {
 		chunks[x][y][z]->UpdateChunk();
 	}
 }
@@ -103,7 +76,7 @@ Chunk* AChunkManager::CreateChunk(int8 X, int8 Y, int8 Z) {
 
 	// Create the chunk and set its LOD to the lowest
 	Chunk* chunk = new Chunk(FIntVector8(X, Y, Z), meshProvider, stitchProvider);
-	chunks[X + CHUNK_BOUNDS][Y + CHUNK_BOUNDS][Z + CHUNK_BOUNDS] = chunk;
+	chunks[X + CHUNK_BOUNDS][Y + CHUNK_BOUNDS][Z + Z_CHUNK_BOUNDS] = chunk;
 
 	// Assign the chunk to the providers
 	meshProvider->SetChunkMaterial(material);
@@ -119,12 +92,12 @@ Chunk* AChunkManager::CreateChunk(int8 X, int8 Y, int8 Z) {
 Chunk* AChunkManager::GetChunk(int8 X, int8 Y, int8 Z) const {
 	X += CHUNK_BOUNDS;
 	Y += CHUNK_BOUNDS;
-	Z += CHUNK_BOUNDS;
+	Z += Z_CHUNK_BOUNDS;
 
 	if (X < 0 || Y < 0 || Z < 0)
 		return nullptr;
 
-	if (X >= CHUNK_COUNT || Y >= CHUNK_COUNT || Z >= CHUNK_COUNT)
+	if (X >= CHUNK_COUNT || Y >= CHUNK_COUNT || Z >= Z_CHUNK_COUNT)
 		return nullptr;
 
 	return chunks[X][Y][Z];

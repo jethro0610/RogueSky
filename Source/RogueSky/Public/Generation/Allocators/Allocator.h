@@ -20,35 +20,17 @@ private:
 	UPROPERTY()
 		TArray<UAllocatorNode*> nodes;
 
-	UPROPERTY(EditAnywhere)
-		float minRadius = 512.0f;
-
-	UPROPERTY(EditAnywhere)
-		float maxRadius = 1024.0f;
-
-	UPROPERTY(EditAnywhere)
-		float minDist = 128.0f;
-
-	UPROPERTY(EditAnywhere)
-		float maxDist = 256.0f;
-
-	UPROPERTY(EditAnywhere)
-		FVector2D origin = FVector2D::ZeroVector;
-
-	UPROPERTY(EditAnywhere)
-		float placementRange = 10.0f;
-
 	UPROPERTY()
 		FAllocatorGraph delauneyGraph;
 
 	UPROPERTY()
 		FAllocatorGraph minimumSpanningTree;
 
-	const float SUPER_TRIANGLE_RANGE = 65536;
+	const float SUPER_TRIANGLE_RANGE = 65536 * 2;
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void PlaceRandomNodes(int NumberOfNodes);
+		void PlaceRandomNodes(int NumberOfNodes, float MinRadius, float MaxRadius, float MinDistance, float MaxDistance, FVector2D Origin);
 
 	UFUNCTION(BlueprintCallable)
 		void AllocateNodes();
