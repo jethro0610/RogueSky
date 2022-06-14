@@ -28,6 +28,8 @@ void UAllocator::AllocateNodes() {
                 if (node->SolveCollision(other) == true)
                     resolvedAll = false;
             }
+            if (node->SolveBorders() == true)
+                resolvedAll = false;
         }
     }
 }

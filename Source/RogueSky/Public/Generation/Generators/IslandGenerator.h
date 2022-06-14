@@ -17,7 +17,7 @@ struct IslandProperties {
 	float maxRadius = 16384.0f;
 	float blobNoiseAmount = 1.5f;
 
-	float minThickness = 512.0f;
+	float minThickness = 2048.0f;
 
 	float sharedHeightRange = 2048.0f;
 	float sharedNoiseScale = 8192.0f;

@@ -116,6 +116,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool SolveCollision(UAllocatorNode* Other);
 
+	UFUNCTION(BlueprintCallable)
+		bool SolveBorders();
+
 	UFUNCTION(BlueprintPure)
 		FVector2D GetLocation() const { return location; }
 

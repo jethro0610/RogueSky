@@ -49,11 +49,16 @@ void AChunkManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	int chunkCount = 0;
+	int activeCount = 0;
 	// Update the chunks
 	for (int8 x = 0; x < CHUNK_COUNT; x++)
 	for (int8 y = 0; y < CHUNK_COUNT; y++)
 	for (int8 z = 0; z < Z_CHUNK_COUNT; z++) {
 		chunks[x][y][z]->UpdateChunk();
+		chunkCount++;
+		if (chunks[x][y][z]->GetState() != ChunkState::Init)
+			activeCount++;
 	}
 }
 

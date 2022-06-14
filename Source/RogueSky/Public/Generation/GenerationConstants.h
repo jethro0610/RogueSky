@@ -61,6 +61,8 @@ namespace GenerationConstants {
     const uint8 CHUNK_BOUNDS = CHUNK_COUNT / 2;
 
     const uint16 CHUNK_SIZE = 4096;
+    const int WORLD_SIZE = CHUNK_SIZE * CHUNK_BOUNDS;
+
     const uint8 MAX_CHUNK_RESOLUTION = 32;
     const uint16 VOXEL_SIZE = CHUNK_SIZE / MAX_CHUNK_RESOLUTION;
     const uint8 DISTANCE_FIELD_SIZE = MAX_CHUNK_RESOLUTION + 1;

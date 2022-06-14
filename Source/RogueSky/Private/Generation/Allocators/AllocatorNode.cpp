@@ -1,5 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Allocators/AllocatorNode.h"
+#include "Generation/GenerationConstants.h"
+
+using namespace GenerationConstants;
 
 bool UAllocatorNode::SolveCollision(UAllocatorNode* Other) {
     float greatestMinimumDistance = FMath::Max(minDistance, Other->minDistance);
@@ -19,6 +22,34 @@ bool UAllocatorNode::SolveCollision(UAllocatorNode* Other) {
     Other->location = midPoint - slope * distanceForCollision * 0.5f;
 
     return true;
+}
+
+bool UAllocatorNode::SolveBorders() {
+    bool isOnBorder = false;
+    if (location.X + radius > WORLD_SIZE) {
+        location.X = WORLD_SIZE - radius - CHUNK_SIZE;
+        UE_LOG(LogTemp, Warning, TEXT("On +X Border"));
+        isOnBorder = true;
+    }
+
+    if (location.X - radius < -WORLD_SIZE) {
+        location.X = -WORLD_SIZE + radius + CHUNK_SIZE;
+        UE_LOG(LogTemp, Warning, TEXT("On -X Border"));
+        isOnBorder = true;
+    }
+
+    if (location.Y + radius > WORLD_SIZE) {
+        location.Y = WORLD_SIZE - radius - CHUNK_SIZE;
+        UE_LOG(LogTemp, Warning, TEXT("On +Y Border"));
+        isOnBorder = true;
+    }
+
+    if (location.Y - radius < -WORLD_SIZE) {
+        location.Y = -WORLD_SIZE + radius + CHUNK_SIZE;
+        UE_LOG(LogTemp, Warning, TEXT("On -Y Border"));
+        isOnBorder = true;
+    }
+    return isOnBorder;
 }
 
 void FAllocatorEdge::GetStandardForm(float& OutA, float& OutB, float& OutC) const {
