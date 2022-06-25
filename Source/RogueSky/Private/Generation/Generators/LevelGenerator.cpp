@@ -8,13 +8,6 @@ ALevelGenerator::ALevelGenerator() {
     allocator = CreateDefaultSubobject<UAllocator>("Allocator");
 }
 
-
-ALevelGenerator::~ALevelGenerator() {
-    for (IslandGenerator* islandGenerator : islandGenerators) {
-        delete islandGenerator;
-    }
-}
-
 void ALevelGenerator::GenerateLevel() {
     allocator->PlaceRandomNodes(numberOfIslands, minRadius, maxRadius, minDistance, maxDistance, FVector2D::ZeroVector);
     allocator->AllocateNodes();
@@ -25,14 +18,15 @@ void ALevelGenerator::GenerateLevel() {
         properties.origin = FVector(node->GetLocation().X, node->GetLocation().Y, 0.0f);
         properties.maxRadius = node->GetRadius();
         properties.minRadius = node->GetRadius() * 0.25f;
-        IslandGenerator* islandGenerator = new IslandGenerator(properties);
+        UIslandGenerator* islandGenerator = NewObject<UIslandGenerator>();
+        islandGenerator->Initialize(properties);
         islandGenerator->Generate();
         islandGenerators.Add(islandGenerator);
         nodeIslandMap.Add(node, islandGenerator);
     }
 
     AChunkManager* chunkManager = Cast<ARogueSkyGameModeBase>(GetWorld()->GetAuthGameMode())->GetChunkManager();
-    for (IslandGenerator* islandGenerator : islandGenerators) {
+    for (UIslandGenerator* islandGenerator : islandGenerators) {
         for (auto pair : islandGenerator->distanceFields) {
             Chunk* chunk = chunkManager->GetChunk(pair.Key);
             if (chunk == nullptr) {

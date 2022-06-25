@@ -72,7 +72,7 @@ void ARail::SetEndpointLocation(FVector Location) {
     //spline->AddSplinePointAtIndex((GetActorLocation() + Location) / 2.0f, 1, ESplineCoordinateSpace::World, true); // This adds a point in the middle
 }
 
-void ARail::ConnectIslands(IslandGenerator* Island1, IslandGenerator* Island2) {
+void ARail::ConnectIslands(UIslandGenerator* Island1, UIslandGenerator* Island2) {
     FVector2D locationFrom1to2 = (Island2->GetBlobMask().GetOrigin() - Island1->GetBlobMask().GetOrigin()).GetSafeNormal();
     float island1EdgeDistance = Island1->GetBlobMask().GetEdgeDistanceFromOrigin(locationFrom1to2) - 2000.0f;
     float island2EdgeDistance = Island2->GetBlobMask().GetEdgeDistanceFromOrigin(-locationFrom1to2) - 2000.0f;

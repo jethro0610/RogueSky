@@ -66,5 +66,5 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetEndpointLocation(FVector Location);
 
-	void ConnectIslands(IslandGenerator* Island1, IslandGenerator* Island2);
+	void ConnectIslands(UIslandGenerator* Island1, UIslandGenerator* Island2);
 };

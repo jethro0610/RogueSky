@@ -8,8 +8,8 @@ Placer::Placer(TSubclassOf<AActor> ActorToPlace) {
 Placer::~Placer() {
 }
 
-void Placer::Place(IslandGenerator& Generator, UWorld* World) {
-    BlobMask blobMask = Generator.GetBlobMask();
+void Placer::Place(UIslandGenerator* Generator, UWorld* World) {
+    BlobMask blobMask = Generator->GetBlobMask();
 
     float startAngleToEdge = FMath::Rand();
     FVector2D startEdgeDirection = FVector2D(FMath::Cos(startAngleToEdge), FMath::Sin((float)startAngleToEdge));
@@ -24,7 +24,7 @@ void Placer::Place(IslandGenerator& Generator, UWorld* World) {
         int placements = (FMath::Rand() % (maxPlacementsBeforeRotate - minPlacementsBeforeRotate)) + minPlacementsBeforeRotate;
 
         for (int i = 0; i < placements; i++) {
-            FVector spawnLocation = Generator.GetLocationOnSurface(spawnPoint);
+            FVector spawnLocation = Generator->GetLocationOnSurface(spawnPoint);
 
             World->SpawnActor(actorToPlace.Get(), &spawnLocation);
 
@@ -39,9 +39,9 @@ void Placer::Place(IslandGenerator& Generator, UWorld* World) {
     }
 }
 
-void Placer::PlaceRandom(IslandGenerator& Generator, UWorld* World) {
+void Placer::PlaceRandom(UIslandGenerator* Generator, UWorld* World) {
     for (int i = 0; i < 8; i++) {
-        FVector spawnLocation = Generator.GetRandomLocationOnSurface(1000.0f);
+        FVector spawnLocation = Generator->GetRandomLocationOnSurface(1000.0f);
         World->SpawnActor(actorToPlace.Get(), &spawnLocation);
     }
 }

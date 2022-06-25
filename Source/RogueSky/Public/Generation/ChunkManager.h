@@ -8,6 +8,8 @@
 #include "Components/RuntimeMeshComponentStatic.h"
 #include "ChunkManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDoneGenerating);
+
 UCLASS()
 class ROGUESKY_API AChunkManager : public AActor
 {
@@ -44,7 +46,12 @@ private:
 
 	FVector randomLocation;
 
+	bool bGenerated = false;
+
 public:
+	UPROPERTY(BlueprintAssignable)
+		FOnDoneGenerating OnDoneGenerating;
+
 	Chunk* GetChunk(int8 X, int8 Y, int8 Z) const;
 
 	Chunk* GetChunk(FIntVector8 Location) const {
@@ -52,4 +59,7 @@ public:
 	}
 
 	Chunk* CreateChunk(int8 X, int8 Y, int8 Z);
+
+	UFUNCTION(BlueprintPure)
+		bool IsGenerated() const { return bGenerated; }
 };

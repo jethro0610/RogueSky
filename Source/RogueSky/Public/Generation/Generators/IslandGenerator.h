@@ -5,10 +5,7 @@
 #include "Generation/GenerationTypes.h"
 #include "Generation/Generators/BlobMask.h"
 #include "Generation/Generators/TerrainHeight.h"
-
-/**
- * 
- */
+#include "IslandGenerator.generated.h"
 
 struct IslandProperties {
 	FVector origin = FVector::ZeroVector;
@@ -29,10 +26,13 @@ struct IslandProperties {
 	float floorNoiseScale = 4096.0f;
 };
 
-class ROGUESKY_API IslandGenerator {
+UCLASS(Blueprintable, BlueprintType)
+class ROGUESKY_API UIslandGenerator : public UObject {
+	GENERATED_BODY()
+
 public:
-	IslandGenerator(IslandProperties Properties);
-	~IslandGenerator();
+	void Initialize(IslandProperties Properties);
+	void BeginDestroy() override;
 	TMap<FIntVector8, DistanceField*> distanceFields;
 
 private:
@@ -45,7 +45,18 @@ public:
 	BlobMask& GetBlobMask() { return blobMask; }
 	TerrainHeight& GetSurface() { return surface; }
 
-	void Generate();
-	FVector GetLocationOnSurface(FVector2D Point) const;
-	FVector GetRandomLocationOnSurface(float MinDistanceToEdge = 0.0f) const;
+	UFUNCTION(BlueprintCallable)
+		void Generate();
+
+	UFUNCTION(BlueprintPure)
+		FVector GetLocationOnSurface(FVector2D Point) const;
+
+	UFUNCTION(BlueprintPure)
+		FVector GetRandomLocationOnSurface(float MinDistanceToEdge = 0.0f) const;
+
+	UFUNCTION(BlueprintPure)
+		FVector GetOrigin() const;
+
+	UFUNCTION(BlueprintPure)
+		FVector GetOriginOnSurface() const;
 };

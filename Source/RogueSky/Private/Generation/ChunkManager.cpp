@@ -57,8 +57,14 @@ void AChunkManager::Tick(float DeltaTime)
 	for (int8 z = 0; z < Z_CHUNK_COUNT; z++) {
 		chunks[x][y][z]->UpdateChunk();
 		chunkCount++;
-		if (chunks[x][y][z]->GetState() != ChunkState::Init)
+		if (chunks[x][y][z]->GetState() != ChunkState::Init && chunks[x][y][z]->GetState() != ChunkState::HasStitch)
 			activeCount++;
+	}
+
+	if (activeCount == 0 && bGenerated == false) {
+		UE_LOG(LogTemp, Warning, TEXT("Done generating"));
+		OnDoneGenerating.Broadcast();
+		bGenerated = true;
 	}
 }
 

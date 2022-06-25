@@ -13,10 +13,12 @@ class ROGUESKY_API ALevelGenerator : public AActor {
 
 public:
 	ALevelGenerator();
-	~ALevelGenerator();
+
 private:
-	TArray<IslandGenerator*> islandGenerators;
-	TMap<UAllocatorNode*, IslandGenerator*> nodeIslandMap;
+	UPROPERTY()
+		TArray<UIslandGenerator*> islandGenerators;
+
+	TMap<UAllocatorNode*, UIslandGenerator*> nodeIslandMap;
 
 	UPROPERTY(EditAnywhere)
 		UStaticMesh* railMesh;
@@ -44,4 +46,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		UAllocator* GetAllocator() const { return allocator; }
+
+	UFUNCTION(BlueprintPure)
+		UIslandGenerator* GetIslandFromNode(UAllocatorNode* Node) { return nodeIslandMap[Node]; }
 };

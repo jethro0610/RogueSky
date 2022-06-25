@@ -11,8 +11,8 @@ public:
 	Placer(TSubclassOf<AActor> ActorToPlace);
 	~Placer();
 
-	void Place(IslandGenerator& Generator, UWorld* World);
-	void PlaceRandom(IslandGenerator& Generator, UWorld* World);
+	void Place(UIslandGenerator* Generator, UWorld* World);
+	void PlaceRandom(UIslandGenerator* Generator, UWorld* World);
 
 private:
 	int maxPlacementsBeforeRotate = 4;

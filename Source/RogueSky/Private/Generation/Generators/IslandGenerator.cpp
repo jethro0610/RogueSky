@@ -3,7 +3,7 @@
 #include "Generation/DistanceFieldFunctions.h"
 using namespace DistanceFieldFunctions;
 
-IslandGenerator::IslandGenerator(IslandProperties Properties) {
+void UIslandGenerator::Initialize(IslandProperties Properties) {
 	properties = Properties;
 
 	// Get a random point to sample for the large noise
@@ -31,13 +31,14 @@ IslandGenerator::IslandGenerator(IslandProperties Properties) {
 	);
 }
 
-IslandGenerator::~IslandGenerator() {
+void UIslandGenerator::BeginDestroy() {
+	Super::BeginDestroy();
 	for (auto pair : distanceFields) {
 		delete pair.Value;
 	}
 }
 
-void IslandGenerator::Generate() {
+void UIslandGenerator::Generate() {
 	// Iterate through 2D chunks the blob outlines
 	// Iterate through the z chunks based on the terrain's range
 	for (int8 chunkX = blobMask.GetStartChunkX(); chunkX <= blobMask.GetEndChunkX(); chunkX++)
@@ -62,12 +63,20 @@ void IslandGenerator::Generate() {
 	}
 }
 
-FVector IslandGenerator::GetLocationOnSurface(FVector2D Point) const {
+FVector UIslandGenerator::GetLocationOnSurface(FVector2D Point) const {
 	float height = surface.GetHeight(Point);
 	return FVector(Point.X, Point.Y, height);
 }
 
-FVector IslandGenerator::GetRandomLocationOnSurface(float MinDistanceToEdge) const {
+FVector UIslandGenerator::GetRandomLocationOnSurface(float MinDistanceToEdge) const {
 	FVector2D randomPoint = blobMask.GetRandomPoint(MinDistanceToEdge);
 	return GetLocationOnSurface(randomPoint);
+}
+
+FVector UIslandGenerator::GetOrigin() const {
+	return properties.origin;
+}
+
+FVector UIslandGenerator::GetOriginOnSurface() const {
+	return GetLocationOnSurface(FVector2D(properties.origin.X, properties.origin.Y));
 }

@@ -14,7 +14,7 @@ public:
 public:
 	TSubclassOf<AActor> actorToPlace;
 	UWorld* world;
-	IslandGenerator* generator;
+	UIslandGenerator* generator;
 
 	FVector2D startPoint;
 	FVector2D endPoint;
