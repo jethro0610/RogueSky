@@ -195,3 +195,7 @@ void UVelocityMovementComponent::SetDesiredMovement(FVector DesiredMovement) {
 	}
 	desiredMovement = DesiredMovement.GetClampedToMaxSize(1.0f);
 }
+
+void UVelocityMovementComponent::SetFootLocation(FVector Location) {
+	GetOwner()->SetActorLocation(Location + FVector(0.0f, 0.0f, halfHeight));
+}

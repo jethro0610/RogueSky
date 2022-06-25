@@ -41,7 +41,7 @@ void URailMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 void URailMover::StartRailMovement(ARail* RailToMoveOn, FTransform RailTransform) {
     rail = RailToMoveOn;
     railTransform = RailTransform;
-    GetOwner()->SetActorLocation(railTransform.GetLocation());
+    movementComponent->SetFootLocation(railTransform.GetLocation());
 
     FVector flatRailTangent = railTransform.GetRotation().Vector();
     flatRailTangent = FVector(flatRailTangent.X, flatRailTangent.Y, 0.0f).GetSafeNormal();
@@ -84,7 +84,7 @@ void URailMover::DoMovement_Implementation(float DeltaTime, FVector DesiredMovem
 
     movementComponent->SetVelocity(railTransform.GetRotation().Vector() * currentSpeed);
     railTransform = rail->GetTransformAlongRail(GetOwner()->GetActorLocation());
-    GetOwner()->SetActorLocation(railTransform.GetLocation());
+    movementComponent->SetFootLocation(railTransform.GetLocation());
 
     FVector exitPoint;
     if (currentSpeed > 0.0f)

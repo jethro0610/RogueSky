@@ -139,4 +139,7 @@ public:
 
 	FExitGroundDelegate ExitGround;
 	virtual void OnExitGround();
+
+	UFUNCTION(BlueprintCallable)
+		void SetFootLocation(FVector Location);
 };

@@ -7,6 +7,7 @@
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "Generation/Generators/IslandGenerator.h"
 #include "Rail.generated.h"
 
 UCLASS()
@@ -38,6 +39,9 @@ private:
 	TArray<USplineMeshComponent> meshes;
 
 public:
+	UFUNCTION(BlueprintCallable)
+		void SetMesh(UStaticMesh* StaticMesh) { mesh = StaticMesh; }
+
 	UFUNCTION(BlueprintPure)
 		void LocationIsTouchingRail(FVector Location, bool& IsTouching, FTransform& TransformOnRail) const;
 
@@ -55,4 +59,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void CreateMeshes();
+
+	UFUNCTION(BlueprintCallable)
+		void AddPoint(FVector Location);
+
+	UFUNCTION(BlueprintCallable)
+		void SetEndpointLocation(FVector Location);
+
+	void ConnectIslands(IslandGenerator* Island1, IslandGenerator* Island2);
 };
