@@ -7,6 +7,7 @@
 // Sets default values
 ASpreadPoint::ASpreadPoint() {
     collider = CreateDefaultSubobject<USphereComponent>("Collider");
+    collider->SetSphereRadius(32.0f, false);
     collider->SetCollisionProfileName("SpreadPoint");
     SetRootComponent(collider);
 }

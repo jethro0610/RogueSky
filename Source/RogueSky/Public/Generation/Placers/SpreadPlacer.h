@@ -2,23 +2,22 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Generation/Generators/IslandGenerator.h"
+#include "Gameplay/SpreadPoint.h"
+#include "SpreadPlacer.generated.h"
 
-/**
- * 
- */
-class ROGUESKY_API SpreadPlacer {
-public:
-	SpreadPlacer();
-	~SpreadPlacer();
 
+UCLASS(Blueprintable, BlueprintType)
+class ROGUESKY_API USpreadPlacer : public UObject {
+	GENERATED_BODY()
 public:
-	TSubclassOf<AActor> actorToPlace;
-	UWorld* world;
+	UFUNCTION(BlueprintCallable)
+		void Initialize(UIslandGenerator* Generator);
+	UFUNCTION(BlueprintCallable)
+		void Place();
+
+private:
 	UIslandGenerator* generator;
-
 	FVector2D startPoint;
 	FVector2D endPoint;
 	float distanceBetweenPlacements;
-
-	void Place();
 };

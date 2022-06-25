@@ -1,16 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Placers/SpreadPlacer.h"
 
-SpreadPlacer::SpreadPlacer() {
+void USpreadPlacer::Initialize(UIslandGenerator* Generator) {
+    generator = Generator;
+    startPoint = FVector2D(generator->GetOrigin()) - FVector2D(generator->GetMaxRadius(), generator->GetMaxRadius());
+    endPoint = FVector2D(generator->GetOrigin()) + FVector2D(generator->GetMaxRadius(), generator->GetMaxRadius());
+    distanceBetweenPlacements = 150.0f;
 }
 
-SpreadPlacer::~SpreadPlacer() {
-}
-
-void SpreadPlacer::Place() {
+void USpreadPlacer::Place() {
     for (int x = startPoint.X; x <= endPoint.X; x += distanceBetweenPlacements)
-    for (int y = startPoint.Y; y <= endPoint.Y; y += distanceBetweenPlacements)
-    {
+    for (int y = startPoint.Y; y <= endPoint.Y; y += distanceBetweenPlacements) {
         FVector2D spawnPoint(x, y);
         if (!generator->GetBlobMask().PointIsInBlob(spawnPoint, 1500.0f))
             continue;
@@ -21,6 +21,6 @@ void SpreadPlacer::Place() {
 
         FVector spawnLocation = generator->GetLocationOnSurface(spawnPoint + randomDireciton * randomDistance);
         FRotator spawnRotation = FRotator(0.0f, randomAngle, 0.0f);
-        world->SpawnActor(actorToPlace.Get(), &spawnLocation, &spawnRotation);
+        GetWorld()->SpawnActor(ASpreadPoint::StaticClass(), &spawnLocation, &spawnRotation);
     }
 }

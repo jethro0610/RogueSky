@@ -59,4 +59,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		FVector GetOriginOnSurface() const;
+
+	UFUNCTION(BlueprintPure)
+		float GetMaxRadius() const { return properties.maxRadius; }
 };

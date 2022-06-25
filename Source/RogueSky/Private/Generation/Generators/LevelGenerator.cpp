@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Generators/LevelGenerator.h"
+#include "Generation/Placers/SpreadPlacer.h"
 #include "Gameplay/LevelActors/Rail.h"
 #include "Generation/ChunkManager.h"
 #include "RogueSkyGameModeBase.h"
@@ -23,6 +24,10 @@ void ALevelGenerator::GenerateLevel() {
         islandGenerator->Generate();
         islandGenerators.Add(islandGenerator);
         nodeIslandMap.Add(node, islandGenerator);
+
+        USpreadPlacer* spreadPlacer = NewObject<USpreadPlacer>(GetWorld());
+        spreadPlacer->Initialize(islandGenerator);
+        spreadPlacer->Place();
     }
 
     AChunkManager* chunkManager = Cast<ARogueSkyGameModeBase>(GetWorld()->GetAuthGameMode())->GetChunkManager();
