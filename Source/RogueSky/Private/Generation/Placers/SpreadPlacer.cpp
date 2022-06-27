@@ -12,7 +12,7 @@ void USpreadPlacer::Place() {
     for (int x = startPoint.X; x <= endPoint.X; x += distanceBetweenPlacements)
     for (int y = startPoint.Y; y <= endPoint.Y; y += distanceBetweenPlacements) {
         FVector2D spawnPoint(x, y);
-        if (!generator->GetBlobMask().PointIsInBlob(spawnPoint, 1500.0f))
+        if (!generator->GetBlobMask().PointIsInBlob(spawnPoint, 2048.0f))
             continue;
 
         float randomAngle = FMath::Rand();
