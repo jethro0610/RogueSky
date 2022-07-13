@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/Movers/Mover.h"
-#include "Gameplay/LevelActors/Rail.h"
+#include "Mover.h"
+#include "Gameplay/Level/Rail.h"
 #include "RailMover.generated.h"
 
 UCLASS(meta = (BlueprintSpawnableComponent))

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "VelocityMovementComponent.h"
+#include "Gameplay/Movement/VelocityMovementComponent.h"
 #include "CombatComponent.h"
 #include "AttackAnimationComponent.generated.h"
 

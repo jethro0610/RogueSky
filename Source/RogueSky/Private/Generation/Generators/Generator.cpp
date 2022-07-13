@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Generation/Generators/Generator.h"
-#include "Generation/ChunkManager.h"
-#include "Generation/DistanceFieldFunctions.h"
-#include "Generation/GenerationTypes.h"
+#include "Generation/Chunk/ChunkManager.h"
+#include "Generation/DataTypes/DistanceFieldFunctions.h"
+#include "Generation/DataTypes/GenerationTypes.h"
 
 using namespace DistanceFieldFunctions;
 

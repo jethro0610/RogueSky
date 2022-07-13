@@ -1,9 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Generation/ChunkMeshProvider.h"
-#include "Generation/GenerationConstants.h"
-#include "Generation/Chunk.h"
+#include "Generation/Chunk/ChunkMeshProvider.h"
+#include "Generation/DataTypes/GenerationConstants.h"
+#include "Generation/Chunk/Chunk.h"
 #include "Runtime/Core/Public/Async/ParallelFor.h"
 using namespace GenerationConstants;
 

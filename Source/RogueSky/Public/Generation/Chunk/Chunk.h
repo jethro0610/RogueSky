@@ -3,14 +3,14 @@
 #pragma once
 
 #include "Core.h"
-#include "Generation/GenerationTypes.h"
+#include "Generation/DataTypes/GenerationTypes.h"
 #include "Components/RuntimeMeshComponentStatic.h"
 #include "ChunkMeshProvider.h"
 #include "StitchProvider.h"
 #include "Runtime/Core/Public/HAL/ThreadingBase.h"
-#include "GenerationConstants.h"
+#include "Generation/DataTypes/GenerationConstants.h"
 #include "GenerateVertexLocationsAsyncTask.h"
-#include "Generation/DistanceField.h"
+#include "Generation/DataTypes/DistanceField.h"
 using namespace GenerationConstants;
 
 class AChunkManager;

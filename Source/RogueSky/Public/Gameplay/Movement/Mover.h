@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Gameplay/VelocityMovementComponent.h"
+#include "VelocityMovementComponent.h"
 #include "Mover.generated.h"
 
 UCLASS( Abstract, Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )

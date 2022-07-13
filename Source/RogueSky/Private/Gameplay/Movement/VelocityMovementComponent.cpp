@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/VelocityMovementComponent.h"
-#include "Gameplay/Movers/Mover.h"
+#include "Gameplay/Movement/VelocityMovementComponent.h"
+#include "Gameplay/Movement/Mover.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UVelocityMovementComponent::UVelocityMovementComponent() {

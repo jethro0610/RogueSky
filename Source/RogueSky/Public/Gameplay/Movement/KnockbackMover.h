@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/Movers/Mover.h"
-#include "Gameplay/CombatComponent.h"
+#include "Mover.h"
+#include "Gameplay/Combat/CombatComponent.h"
 #include "KnockbackMover.generated.h"
 
 /**

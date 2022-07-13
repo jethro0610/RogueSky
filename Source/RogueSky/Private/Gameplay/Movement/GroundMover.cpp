@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/Movers/GroundMover.h"
-#include "Gameplay/VelocityMovementComponent.h"
+#include "Gameplay/Movement/GroundMover.h"
+#include "Gameplay/Movement/VelocityMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UGroundMover::UGroundMover() {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Generation/GenerationTypes.h"
+#include "GenerationTypes.h"
 namespace GenerationConstants {
     // Table of cube corners
     const FIntVector8 cornerTable[8] = {

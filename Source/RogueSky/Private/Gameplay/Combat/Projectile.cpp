@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Gameplay/Projectile.h"
-#include "Gameplay/CombatComponent.h"
+#include "Gameplay/Combat/Projectile.h"
+#include "Gameplay/Combat/CombatComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()

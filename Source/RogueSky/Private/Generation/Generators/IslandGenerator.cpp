@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Generators/IslandGenerator.h"
-#include "Generation/DistanceFieldFunctions.h"
+#include "Generation/DataTypes/DistanceFieldFunctions.h"
 using namespace DistanceFieldFunctions;
 
 void UIslandGenerator::Initialize(IslandProperties Properties) {

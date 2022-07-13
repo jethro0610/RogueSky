@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/MovementComponent.h"
-#include "RogueSkyGameModeBase.h"
 #include "VelocityMovementComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FEnterGroundDelegate, FHitResult, FVector);

@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/Movers/DashMover.h"
+#include "Gameplay/Movement/DashMover.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UDashMover::UDashMover() {

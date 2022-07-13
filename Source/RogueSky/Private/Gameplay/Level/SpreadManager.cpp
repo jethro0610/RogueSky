@@ -1,7 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Gameplay/SpreadManager.h"
+#include "Gameplay/Level/SpreadManager.h"
 
 // Sets default values
 ASpreadManager::ASpreadManager() {

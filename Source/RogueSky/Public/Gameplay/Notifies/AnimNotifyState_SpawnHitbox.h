@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "Gameplay/Hitbox.h"
+#include "Gameplay/Combat/Hitbox.h"
 #include "AnimNotifyState_SpawnHitbox.generated.h"
 
 /**

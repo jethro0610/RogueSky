@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/Movers/RailMover.h"
+#include "Gameplay/Movement/RailMover.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Gameplay/LevelActors/Rail.h"
+#include "Gameplay/Level/Rail.h"
 
 URailMover::URailMover() {
     PrimaryComponentTick.bCanEverTick = true;

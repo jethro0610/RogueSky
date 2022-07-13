@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-#include "CombatComponent.h"
+#include "Gameplay/Combat/CombatComponent.h"
 #include "AnimNotify_SpawnProjectile.generated.h"
 
 /**

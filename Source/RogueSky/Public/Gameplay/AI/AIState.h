@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Gameplay/AI/AIStateManager.h"
-#include "Gameplay/TargeterComponent.h"
+#include "Gameplay/Interaction/TargeterComponent.h"
 #include "AIState.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterAIState);

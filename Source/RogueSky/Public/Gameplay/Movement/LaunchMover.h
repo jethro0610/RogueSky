@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/Movers/Mover.h"
-#include "Gameplay/TargeterComponent.h"
+#include "Mover.h"
+#include "Gameplay/Interaction/TargeterComponent.h"
 #include "LaunchMover.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartLaunch);

@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Generation/Generators/BlobMask.h"
+#include "Generation/DataTypes/BlobMask.h"
 
 BlobMask::BlobMask(FVector2D Origin, float MinRadius, float MaxRadius, float NoiseAmount) {
     origin = Origin;

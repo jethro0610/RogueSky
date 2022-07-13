@@ -1,6 +1,6 @@
-#include "Generation/GenerateVertexLocationsAsyncTask.h"
-#include "Generation/GenerationConstants.h"
-#include "Generation/Chunk.h"
+#include "Generation/Chunk/GenerateVertexLocationsAsyncTask.h"
+#include "Generation/DataTypes/GenerationConstants.h"
+#include "Generation/Chunk/Chunk.h"
 using namespace GenerationConstants;
 
 GenerateVertexLocationsAsyncTask::GenerateVertexLocationsAsyncTask(Chunk* Chunk) :

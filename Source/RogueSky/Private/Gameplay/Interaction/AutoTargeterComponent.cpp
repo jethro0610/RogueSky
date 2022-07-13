@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/AutoTargeterComponent.h"
+#include "Gameplay/Interaction/AutoTargeterComponent.h"
 
 UAutoTargeterComponent::UAutoTargeterComponent() {
 	PrimaryComponentTick.bCanEverTick = true;

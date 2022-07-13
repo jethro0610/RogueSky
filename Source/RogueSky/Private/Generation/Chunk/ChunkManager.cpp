@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Generation/ChunkManager.h"
+#include "Generation/Chunk/ChunkManager.h"
 #include "DrawDebugHelpers.h"
-#include "Generation/ChunkMeshProvider.h"
-#include "Generation/StitchProvider.h"
+#include "Generation/Chunk/ChunkMeshProvider.h"
+#include "Generation/Chunk/StitchProvider.h"
 #include "Generation/Generators/IslandGenerator.h"
 #include "Generation/Placers/Placer.h"
 

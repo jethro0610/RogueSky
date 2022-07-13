@@ -1,6 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
-#include "Generation/GenerationConstants.h"
+#include "GenerationConstants.h"
 
 namespace DistanceFieldFunctions {
 	static float SmoothMax(float A, float B, float Smoothness) {

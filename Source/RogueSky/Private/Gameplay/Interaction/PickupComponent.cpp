@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/PickupComponent.h"
+#include "Gameplay/Interaction/PickupComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UPickupComponent::UPickupComponent() {

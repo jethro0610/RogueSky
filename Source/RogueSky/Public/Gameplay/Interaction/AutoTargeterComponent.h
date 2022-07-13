@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/TargeterComponent.h"
+#include "TargeterComponent.h"
 #include "AutoTargeterComponent.generated.h"
 
 /**

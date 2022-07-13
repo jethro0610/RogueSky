@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
 #include "CoreMinimal.h"
-#include "Generation/DistanceField.h"
-#include "Generation/GenerationTypes.h"
-#include "Generation/Generators/BlobMask.h"
-#include "Generation/Generators/TerrainHeight.h"
+#include "Generation/DataTypes/DistanceField.h"
+#include "Generation/DataTypes/GenerationTypes.h"
+#include "Generation/DataTypes/BlobMask.h"
+#include "Generation/DataTypes/TerrainHeight.h"
 #include "IslandGenerator.generated.h"
 
 struct IslandProperties {

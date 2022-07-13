@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
 #include "CoreMinimal.h"
-#include "Generation/GenerationConstants.h"
-#include "Generation/GenerationTypes.h"
+#include "GenerationConstants.h"
+#include "GenerationTypes.h"
 using namespace GenerationConstants;
 
 /**

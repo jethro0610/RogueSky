@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Gameplay/AnimNotifyState_SpawnHitbox.h"
-#include "Gameplay/CombatComponent.h"
+#include "Gameplay/Notifies/AnimNotifyState_SpawnHitbox.h"
+#include "Gameplay/Combat/CombatComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 

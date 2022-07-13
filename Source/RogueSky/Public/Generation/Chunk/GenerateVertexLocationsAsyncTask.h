@@ -2,7 +2,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CoreMinimal.h"
-#include "Generation/GenerationTypes.h"
+#include "Generation/DataTypes/GenerationTypes.h"
 #include "Async/AsyncWork.h"
 
 class Chunk;

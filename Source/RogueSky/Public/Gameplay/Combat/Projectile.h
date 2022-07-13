@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
-#include "Gameplay/VelocityMovementComponent.h"
-#include "Gameplay/Hitbox.h"
+#include "Gameplay/Movement/VelocityMovementComponent.h"
+#include "Hitbox.h"
 #include "Projectile.generated.h"
 
 class UCombatComponent;

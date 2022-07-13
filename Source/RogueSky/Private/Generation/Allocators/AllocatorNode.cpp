@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Allocators/AllocatorNode.h"
-#include "Generation/GenerationConstants.h"
+#include "Generation/DataTypes/GenerationConstants.h"
 
 using namespace GenerationConstants;
 

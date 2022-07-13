@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Gameplay/Movers/TrackTargetMover.h"
+#include "Gameplay/Movement/TrackTargetMover.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UTrackTargetMover::UTrackTargetMover() {

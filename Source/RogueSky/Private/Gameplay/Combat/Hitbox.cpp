@@ -1,9 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Gameplay/Hitbox.h"
-#include "Gameplay/Hurtbox.h"
-#include "Gameplay/CombatComponent.h"
+#include "Gameplay/Combat/Hitbox.h"
+#include "Gameplay/Combat/Hurtbox.h"
+#include "Gameplay/Combat/CombatComponent.h"
 
 UHitbox::UHitbox() {
     SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel3);

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/Movers/Mover.h"
+#include "Mover.h"
 #include "SkateMover.generated.h"
 
 /**

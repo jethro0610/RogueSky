@@ -1,10 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Generation/StitchProvider.h"
-#include "Generation/Chunk.h"
-#include "Generation/ChunkManager.h"
-#include "Generation/GenerationConstants.h"
+#include "Generation/Chunk/StitchProvider.h"
+#include "Generation/Chunk/Chunk.h"
+#include "Generation/Chunk/ChunkManager.h"
+#include "Generation/DataTypes/GenerationConstants.h"
 using namespace GenerationConstants;
 
 void UStitchProvider::Initialize() {

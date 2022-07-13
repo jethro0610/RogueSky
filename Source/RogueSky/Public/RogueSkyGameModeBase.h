@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generation/ChunkManager.h"
-#include "Gameplay/SpreadManager.h"
+#include "Generation/Chunk/ChunkManager.h"
+#include "Gameplay/Level/SpreadManager.h"
 #include "GameFramework/GameModeBase.h"
 #include "RogueSkyGameModeBase.generated.h"
 

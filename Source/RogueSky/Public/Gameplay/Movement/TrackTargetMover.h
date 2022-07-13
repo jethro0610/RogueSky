@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/Movers/Mover.h"
-#include "Gameplay/TargeterComponent.h"
+#include "Mover.h"
+#include "Gameplay/Interaction/TargeterComponent.h"
 #include "TrackTargetMover.generated.h"
 
 /**

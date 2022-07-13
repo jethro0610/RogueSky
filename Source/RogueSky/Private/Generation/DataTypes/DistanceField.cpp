@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Generation/DistanceField.h"
+#include "Generation/DataTypes/DistanceField.h"
 
 DistanceField::DistanceField() {
     // Initialize the distance field to the max distance

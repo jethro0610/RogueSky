@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Gameplay/VelocityMovementComponent.h"
-#include "Gameplay/TargeterComponent.h"
+#include "Gameplay/Movement/VelocityMovementComponent.h"
 #include "AIStateManager.generated.h"
 
 class UAIState;

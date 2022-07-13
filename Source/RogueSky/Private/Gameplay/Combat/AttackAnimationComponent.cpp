@@ -1,7 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "Gameplay/AttackAnimationComponent.h"
+#include "Gameplay/Combat/AttackAnimationComponent.h"
 
 // Sets default values for this component's properties
 UAttackAnimationComponent::UAttackAnimationComponent()

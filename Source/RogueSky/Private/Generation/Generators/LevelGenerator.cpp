@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/Generators/LevelGenerator.h"
-#include "Gameplay/LevelActors/Rail.h"
-#include "Generation/ChunkManager.h"
+#include "Gameplay/Level/Rail.h"
+#include "Generation/Chunk/ChunkManager.h"
 #include "RogueSkyGameModeBase.h"
 
 ALevelGenerator::ALevelGenerator() {

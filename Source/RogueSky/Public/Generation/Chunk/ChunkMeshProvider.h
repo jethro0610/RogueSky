@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Generation/GenerationTypes.h"
+#include "Generation/DataTypes/GenerationTypes.h"
 #include "RuntimeMeshProvider.h"
 #include "ChunkMeshProvider.generated.h"
 

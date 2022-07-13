@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Generation/Chunk.h"
-#include "Generation/ChunkManager.h"
+#include "Generation/Chunk/Chunk.h"
+#include "Generation/Chunk/ChunkManager.h"
 #include "RogueSkyGameModeBase.h"
-#include "Generation/GenerationConstants.h"
+#include "Generation/DataTypes/GenerationConstants.h"
 #include "Generator.generated.h"
 using namespace GenerationConstants;
 
