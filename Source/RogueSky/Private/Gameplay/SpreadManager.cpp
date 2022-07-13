@@ -4,39 +4,36 @@
 #include "Gameplay/SpreadManager.h"
 
 // Sets default values
-ASpreadManager::ASpreadManager()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+ASpreadManager::ASpreadManager() {
 	instancedStaticMesh = CreateDefaultSubobject<UHierarchicalInstancedStaticMeshComponent>("Instanced Mesh");
 	instancedStaticMesh->bDisableCollision = true;
+	SetRootComponent(instancedStaticMesh);
 }
 
-// Called when the game starts or when spawned
-void ASpreadManager::BeginPlay()
-{
+// Called when the game starts or when spawned 
+void ASpreadManager::BeginPlay() {
 	Super::BeginPlay();
-	instancedStaticMesh->SetWorldLocation(FVector::ZeroVector);
-	spreadManager = this;
 }
 
-int ASpreadManager::CreateSpreadIndex() {
-	spreadIndexes.Add(false);
-	return spreadIndexes.Num() - 1;
+void ASpreadManager::AddSpreadPoint(int X, int Y, int Z) {
+	spreadPoints.Add(GetLocationTuple(X, Y, Z), false);
 }
 
-bool ASpreadManager::ActivateSpreadIndex(int Index, FTransform Transform) {
-	if (Index >= spreadIndexes.Num() || Index < 0)
+bool ASpreadManager::ActivateSpreadPoint(int X, int Y, int Z) {
+	auto locationTuple = GetLocationTuple(X, Y, Z);
+	if (!spreadPoints.Contains(locationTuple))
 		return false;
 
-	// Return if the spread point is already activated
-	if (spreadIndexes[Index] == true)
+	// Skip if the spread point was already activated
+	if (spreadPoints[locationTuple] == true)
 		return false;
 
-	instancedStaticMesh->AddInstance(Transform, true);
-	spreadIndexes[Index] = true;
-	activatedSpreadIndexes++;
+	spreadPoints[locationTuple] = true;
+	activatedSpreadCount++;
 	return true;
+}
+
+TTuple<uint16, uint16, uint16> ASpreadManager::GetLocationTuple(uint16 X, uint16 Y, uint16 Z) {
+	return TTuple<uint16, uint16, uint16>(X, Y, Z);
 }
 

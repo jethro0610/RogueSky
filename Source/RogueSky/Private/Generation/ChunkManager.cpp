@@ -6,7 +6,6 @@
 #include "Generation/StitchProvider.h"
 #include "Generation/Generators/IslandGenerator.h"
 #include "Generation/Placers/Placer.h"
-#include "Generation/Placers/SpreadPlacer.h"
 
 // Sets default values
 AChunkManager::AChunkManager()

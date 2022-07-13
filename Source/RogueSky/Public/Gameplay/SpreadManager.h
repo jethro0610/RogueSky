@@ -21,18 +21,17 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	inline static ASpreadManager* spreadManager;
 	UPROPERTY(VisibleAnywhere)
 		UHierarchicalInstancedStaticMeshComponent* instancedStaticMesh;
 	
-	TArray<bool> spreadIndexes;
-	int activatedSpreadIndexes;
+	float spreadSpacing;
+	TMap<TTuple<uint16, uint16, uint16>, bool> spreadPoints;
+	uint16 activatedSpreadCount = 0;
 
 public:
 	UFUNCTION(BlueprintCallable)
-		int CreateSpreadIndex();
+		void AddSpreadPoint(int X, int Y, int Z);
 	UFUNCTION(BlueprintCallable)
-		bool ActivateSpreadIndex(int Index, FTransform Transform);
-
-	static ASpreadManager* GetSpreadManager() { return spreadManager; }
+		bool ActivateSpreadPoint(int X, int Y, int Z);
+	TTuple<uint16, uint16, uint16> GetLocationTuple(uint16 X, uint16 Y, uint16 Z);
 };
