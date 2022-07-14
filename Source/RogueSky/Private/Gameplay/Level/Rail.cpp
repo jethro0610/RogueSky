@@ -72,16 +72,16 @@ void ARail::SetEndpointLocation(FVector Location) {
     //spline->AddSplinePointAtIndex((GetActorLocation() + Location) / 2.0f, 1, ESplineCoordinateSpace::World, true); // This adds a point in the middle
 }
 
-void ARail::ConnectIslands(UIslandGenerator* Island1, UIslandGenerator* Island2) {
-    FVector2D locationFrom1to2 = (Island2->GetBlobMask().GetOrigin() - Island1->GetBlobMask().GetOrigin()).GetSafeNormal();
-    float island1EdgeDistance = Island1->GetBlobMask().GetEdgeDistanceFromOrigin(locationFrom1to2) - 2000.0f;
-    float island2EdgeDistance = Island2->GetBlobMask().GetEdgeDistanceFromOrigin(-locationFrom1to2) - 2000.0f;
+void ARail::ConnectSections(ALevelSection* Section1, ALevelSection* Section2) {
+    FVector2D locationFrom1to2 = (Section2->GetLocation2D() - Section1->GetLocation2D()).GetSafeNormal();
+    float island1EdgeDistance = Section1->GetEdgeDistanceFromOrigin(locationFrom1to2) - 2000.0f;
+    float island2EdgeDistance = Section2->GetEdgeDistanceFromOrigin(-locationFrom1to2) - 2000.0f;
 
-    FVector2D island1Location2D = Island1->GetBlobMask().GetOrigin() + island1EdgeDistance * locationFrom1to2;
-    FVector2D island2Location2D = Island2->GetBlobMask().GetOrigin() + island2EdgeDistance * -locationFrom1to2;
+    FVector2D island1Location2D = Section1->GetLocation2D() + island1EdgeDistance * locationFrom1to2;
+    FVector2D island2Location2D = Section2->GetLocation2D() + island2EdgeDistance * -locationFrom1to2;
 
-    FVector island1Location = Island1->GetLocationOnSurface(island1Location2D) + FVector(0.0f, 0.0f, 50.0f);
-    FVector island2Location = Island2->GetLocationOnSurface(island2Location2D) + FVector(0.0f, 0.0f, 50.0f);;
+    FVector island1Location = Section1->GetLocationOnSurface(island1Location2D) + FVector(0.0f, 0.0f, 50.0f);
+    FVector island2Location = Section2->GetLocationOnSurface(island2Location2D) + FVector(0.0f, 0.0f, 50.0f);;
 
     SetActorLocation(island1Location);
     SetEndpointLocation(island2Location);

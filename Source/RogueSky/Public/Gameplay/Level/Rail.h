@@ -7,7 +7,7 @@
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
 #include "Components/BoxComponent.h"
-#include "Generation/Generators/IslandGenerator.h"
+#include "Generation/LevelSections/LevelSection.h"
 #include "Rail.generated.h"
 
 UCLASS()
@@ -66,5 +66,5 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SetEndpointLocation(FVector Location);
 
-	void ConnectIslands(UIslandGenerator* Island1, UIslandGenerator* Island2);
+	void ConnectSections(ALevelSection* Section1, ALevelSection* Section2);
 };

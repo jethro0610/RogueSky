@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
 #include "CoreMinimal.h"
-#include "Generation/Generators/IslandGenerator.h"
+#include "LevelSection.h"
 #include "Generation/Allocators/Allocator.h"
 #include "LevelGenerator.generated.h"
 /**
@@ -15,27 +15,21 @@ public:
 	ALevelGenerator();
 
 private:
-	UPROPERTY()
-		TArray<UIslandGenerator*> islandGenerators;
+	UPROPERTY(EditAnywhere)
+		TArray<TSubclassOf<ALevelSection>> levelSections;
 
-	TMap<UAllocatorNode*, UIslandGenerator*> nodeIslandMap;
+	TMap<UAllocatorNode*, ALevelSection*> nodeSectionMap;
 
 	UPROPERTY(EditAnywhere)
 		UStaticMesh* railMesh;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 		UAllocator* allocator;
 
 	UPROPERTY(EditAnywhere)
-		int numberOfIslands;
+		float minDistance = 128.0f;
 	UPROPERTY(EditAnywhere)
-		float minRadius;
-	UPROPERTY(EditAnywhere)
-		float maxRadius;
-	UPROPERTY(EditAnywhere)
-		float minDistance;
-	UPROPERTY(EditAnywhere)
-		float maxDistance;
+		float maxDistance = 256.0f;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -48,5 +42,5 @@ public:
 		UAllocator* GetAllocator() const { return allocator; }
 
 	UFUNCTION(BlueprintPure)
-		UIslandGenerator* GetIslandFromNode(UAllocatorNode* Node) { return nodeIslandMap[Node]; }
+		ALevelSection* GetSectionFromNode(UAllocatorNode* Node) { return nodeSectionMap[Node]; }
 };

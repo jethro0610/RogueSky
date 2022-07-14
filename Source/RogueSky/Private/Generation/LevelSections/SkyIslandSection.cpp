@@ -1,20 +1,34 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Generation/Generators/IslandGenerator.h"
+#include "Generation/LevelSections/SkyIslandSection.h"
 #include "Generation/DataTypes/DistanceFieldFunctions.h"
 using namespace DistanceFieldFunctions;
 
-void UIslandGenerator::Initialize(IslandProperties Properties) {
-	properties = Properties;
+ASkyIslandSection::ASkyIslandSection() {
+	minRadius = 12288.0f;
+	maxRadius = 18432.0f;
+}
 
+void ASkyIslandSection::BeginPlay() {
+	Super::BeginPlay();
+}
+
+void ASkyIslandSection::BeginDestroy() {
+	for (auto pair : distanceFields) {
+		delete pair.Value;
+	}
+	Super::BeginDestroy();
+}
+
+void ASkyIslandSection::Generate() {
 	// Get a random point to sample for the large noise
 	FVector2D largeOrigin;
 	largeOrigin.X = FMath::Rand() - RAND_MAX / 2;
 	largeOrigin.Y = FMath::Rand() - RAND_MAX / 2;
 
 	// Initialize the 2D generators
-	blobMask = BlobMask(FVector2D(properties.origin), properties.minRadius, properties.maxRadius, properties.blobNoiseAmount);
+	blobMask = BlobMask(GetLocation2D(), GetRadius() * 0.25, GetRadius(), properties.blobNoiseAmount);
 	surface = TerrainHeight(
-		properties.origin.Z + properties.minThickness / 2.0f,
+		GetActorLocation().Z + properties.minThickness / 2.0f,
 		properties.surfaceMaxHeight,
 		1.0f / properties.surfaceNoiseScale,
 		largeOrigin,
@@ -22,23 +36,14 @@ void UIslandGenerator::Initialize(IslandProperties Properties) {
 		1.0f / properties.sharedNoiseScale
 	);
 	floor = TerrainHeight(
-		properties.origin.Z - properties.minThickness / 2.0f,
+		GetActorLocation().Z - properties.minThickness / 2.0f,
 		-properties.floorMaxHeight,
 		1.0f / properties.floorNoiseScale,
 		largeOrigin,
 		properties.sharedHeightRange,
 		1.0f / properties.sharedNoiseScale
 	);
-}
 
-void UIslandGenerator::BeginDestroy() {
-	Super::BeginDestroy();
-	for (auto pair : distanceFields) {
-		delete pair.Value;
-	}
-}
-
-void UIslandGenerator::Generate() {
 	// Iterate through 2D chunks the blob outlines
 	// Iterate through the z chunks based on the terrain's range
 	for (int8 chunkX = blobMask.GetStartChunkX(); chunkX <= blobMask.GetEndChunkX(); chunkX++)
@@ -63,20 +68,15 @@ void UIslandGenerator::Generate() {
 	}
 }
 
-FVector UIslandGenerator::GetLocationOnSurface(FVector2D Point) const {
+bool ASkyIslandSection::LocationIsInside(FVector2D Location, float DistanceToEdge) const {
+	return blobMask.PointIsInBlob(Location, DistanceToEdge);
+}
+
+FVector ASkyIslandSection::GetLocationOnSurface(FVector2D Point) const {
 	float height = surface.GetHeight(Point);
 	return FVector(Point.X, Point.Y, height);
 }
 
-FVector UIslandGenerator::GetRandomLocationOnSurface(float MinDistanceToEdge) const {
-	FVector2D randomPoint = blobMask.GetRandomPoint(MinDistanceToEdge);
-	return GetLocationOnSurface(randomPoint);
-}
-
-FVector UIslandGenerator::GetOrigin() const {
-	return properties.origin;
-}
-
-FVector UIslandGenerator::GetOriginOnSurface() const {
-	return GetLocationOnSurface(FVector2D(properties.origin.X, properties.origin.Y));
+float ASkyIslandSection::GetEdgeDistanceFromOrigin(FVector2D EdgeDirection) const {
+	return blobMask.GetEdgeDistanceFromOrigin(EdgeDirection);
 }

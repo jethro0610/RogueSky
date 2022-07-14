@@ -15,6 +15,16 @@ void UAllocator::PlaceRandomNodes(int NumberOfNodes, float MinRadius, float MaxR
     }
 }
 
+UAllocatorNode* UAllocator::CreateNode(float Radius, float MinDistance, float MaxDistance) {
+    FVector2D location = FVector2D(FMath::RandRange(-10.0f, 10.0f), FMath::RandRange(-10.0f, 10.0f));
+    float distance = FMath::RandRange(MinDistance, MaxDistance);
+
+    UAllocatorNode* newNode = NewObject<UAllocatorNode>(this);
+    newNode->Initialize(location, Radius, distance);
+    nodes.Add(newNode);
+    return newNode;
+}
+
 void UAllocator::AllocateNodes() {
     bool resolvedAll = false;
 

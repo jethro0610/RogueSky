@@ -1,33 +1,35 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Generation/Generators/LevelGenerator.h"
+#include "Generation/LevelSections/LevelGenerator.h"
 #include "Gameplay/Level/Rail.h"
 #include "Generation/Chunk/ChunkManager.h"
 #include "RogueSkyGameModeBase.h"
 
 ALevelGenerator::ALevelGenerator() {
-    allocator = CreateDefaultSubobject<UAllocator>("Allocator");
+    
 }
 
 void ALevelGenerator::GenerateLevel() {
-    allocator->PlaceRandomNodes(numberOfIslands, minRadius, maxRadius, minDistance, maxDistance, FVector2D::ZeroVector);
+    allocator = NewObject<UAllocator>(this);
+
+    FActorSpawnParameters sectionParameters;
+    sectionParameters.bNoFail = true;
+    for (TSubclassOf<ALevelSection> levelSection : levelSections) {
+        ALevelSection* spawnedSection = GetWorld()->SpawnActor<ALevelSection>(levelSection, FVector::ZeroVector, FRotator::ZeroRotator, sectionParameters);
+        UAllocatorNode* node = allocator->CreateNode(spawnedSection->GetRadius(), minDistance, maxDistance);
+        nodeSectionMap.Add(node, spawnedSection);
+    }
     allocator->AllocateNodes();
     allocator->UpdateGraphs();
     
     for (UAllocatorNode* node : allocator->GetNodes()) {
-        IslandProperties properties;
-        properties.origin = FVector(node->GetLocation().X, node->GetLocation().Y, 0.0f);
-        properties.maxRadius = node->GetRadius();
-        properties.minRadius = node->GetRadius() * 0.25f;
-        UIslandGenerator* islandGenerator = NewObject<UIslandGenerator>();
-        islandGenerator->Initialize(properties);
-        islandGenerator->Generate();
-        islandGenerators.Add(islandGenerator);
-        nodeIslandMap.Add(node, islandGenerator);
+        ALevelSection* section = nodeSectionMap[node];
+        section->SetActorLocation(FVector(node->GetLocation(), 0.0f));
+        section->Generate();
     }
 
     AChunkManager* chunkManager = Cast<ARogueSkyGameModeBase>(GetWorld()->GetAuthGameMode())->GetChunkManager();
-    for (UIslandGenerator* islandGenerator : islandGenerators) {
-        for (auto pair : islandGenerator->distanceFields) {
+    for (TPair<UAllocatorNode*, ALevelSection*> nodeSectionPair : nodeSectionMap) {
+        for (auto pair : nodeSectionPair.Value->GetDistanceFields()) {
             Chunk* chunk = chunkManager->GetChunk(pair.Key);
             if (chunk == nullptr) {
                 UE_LOG(LogTemp, Warning, TEXT("Attempt to generate on invalid chunk at: %s"), *pair.Key.ToString());
@@ -47,6 +49,6 @@ void ALevelGenerator::GenerateConnections() {
     for (FAllocatorEdge& edge : allocator->GetMinimumSpanningTree().edges) {
         ARail* newRail = (ARail*)GetWorld()->SpawnActor(ARail::StaticClass());
         newRail->SetMesh(railMesh);
-        newRail->ConnectIslands(nodeIslandMap[edge.nodes[0]], nodeIslandMap[edge.nodes[1]]);
+        newRail->ConnectSections(nodeSectionMap[edge.nodes[0]], nodeSectionMap[edge.nodes[1]]);
     }
 }

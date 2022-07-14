@@ -4,8 +4,6 @@
 #include "DrawDebugHelpers.h"
 #include "Generation/Chunk/ChunkMeshProvider.h"
 #include "Generation/Chunk/StitchProvider.h"
-#include "Generation/Generators/IslandGenerator.h"
-#include "Generation/Placers/Placer.h"
 
 // Sets default values
 AChunkManager::AChunkManager()

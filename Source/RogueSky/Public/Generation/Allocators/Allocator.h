@@ -33,6 +33,9 @@ public:
 		void PlaceRandomNodes(int NumberOfNodes, float MinRadius, float MaxRadius, float MinDistance, float MaxDistance, FVector2D Origin);
 
 	UFUNCTION(BlueprintCallable)
+		UAllocatorNode* CreateNode(float Radius, float MinDistance, float MaxDistance);
+
+	UFUNCTION(BlueprintCallable)
 		void AllocateNodes();
 
 	UFUNCTION(BlueprintCallable)
