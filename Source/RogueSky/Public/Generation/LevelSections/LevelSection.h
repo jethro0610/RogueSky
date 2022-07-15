@@ -26,8 +26,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UHierarchicalInstancedStaticMeshComponent* instancedStaticMesh;
 
-	float spreadSpacing;
-	TMap<TTuple<int16, int16, int16>, bool> spreadPoints;
+	UPROPERTY(EditAnywhere)
+		float spreadSpacing = 150.0f;
+	TMap<TTuple<int16, int16>, bool> spreadPoints;
 	uint16 activatedSpreadCount = 0;
 
 protected:
@@ -43,11 +44,12 @@ public:
 	UFUNCTION(BlueprintPure)
 		FVector2D GetLocation2D() const { return FVector2D(GetActorLocation()); }
 
+	void CreateSpreadPoints();
 	UFUNCTION(BlueprintCallable)
-		void AddSpreadPoint(int X, int Y, int Z);
-	UFUNCTION(BlueprintCallable)
-		bool ActivateSpreadPoint(int X, int Y, int Z);
-	TTuple<int16, int16, int16> GetLocationTuple(int16 X, int16 Y, int16 Z) const;
+		bool ActivateSpreadPoint(int X, int Y);
+	UFUNCTION(BlueprintPure)
+		float GetSpreadSpacing() const { return spreadSpacing; }
+	TTuple<int16, int16> GetLocationTuple(int16 X, int16 Y) const;
 
 	virtual void Generate() {};
 	UFUNCTION(BlueprintPure)

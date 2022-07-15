@@ -25,6 +25,7 @@ void ALevelGenerator::GenerateLevel() {
         ALevelSection* section = nodeSectionMap[node];
         section->SetActorLocation(FVector(node->GetLocation(), 0.0f));
         section->Generate();
+        section->CreateSpreadPoints();
     }
 
     AChunkManager* chunkManager = Cast<ARogueSkyGameModeBase>(GetWorld()->GetAuthGameMode())->GetChunkManager();

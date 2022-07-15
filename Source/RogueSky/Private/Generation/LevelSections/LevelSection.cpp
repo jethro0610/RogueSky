@@ -4,8 +4,7 @@
 // Sets default values
 ALevelSection::ALevelSection() {
 	sectionArea = CreateDefaultSubobject<USphereComponent>("Section Range");
-	sectionArea->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	sectionArea->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	sectionArea->SetCollisionProfileName("LevelSection");
 	SetRootComponent(sectionArea);
 
 	instancedStaticMesh = CreateDefaultSubobject<UHierarchicalInstancedStaticMeshComponent>("Instanced Mesh");
@@ -18,12 +17,20 @@ void ALevelSection::BeginPlay() {
 	sectionArea->SetSphereRadius(FMath::RandRange(minRadius, maxRadius));
 }
 
-void ALevelSection::AddSpreadPoint(int X, int Y, int Z) {
-	spreadPoints.Add(GetLocationTuple(X, Y, Z), false);
+void ALevelSection::CreateSpreadPoints() {
+	for (float x = -GetRadius(); x < GetRadius(); x += spreadSpacing)
+	for (float y = -GetRadius(); y < GetRadius(); y += spreadSpacing) {
+		if (!LocationIsInside(FVector2D(x, y) + GetLocation2D(), 1024.0f))
+			continue;
+
+		int16 intX = x / spreadSpacing;
+		int16 intY = y / spreadSpacing;
+		spreadPoints.Add(GetLocationTuple(intX, intY), false);
+	}
 }
 
-bool ALevelSection::ActivateSpreadPoint(int X, int Y, int Z) {
-	auto locationTuple = GetLocationTuple(X, Y, Z);
+bool ALevelSection::ActivateSpreadPoint(int X, int Y) {
+	auto locationTuple = GetLocationTuple(X, Y);
 	if (!spreadPoints.Contains(locationTuple))
 		return false;
 
@@ -33,9 +40,15 @@ bool ALevelSection::ActivateSpreadPoint(int X, int Y, int Z) {
 
 	spreadPoints[locationTuple] = true;
 	activatedSpreadCount++;
+
+	FTransform instanceTransform;
+	FVector2D pointOrigin = GetLocation2D() + FVector2D(X, Y) * spreadSpacing;
+	instanceTransform.SetLocation(GetLocationOnSurface(pointOrigin));
+	instancedStaticMesh->AddInstance(instanceTransform);
+
 	return true;
 }
 
-TTuple<int16, int16, int16> ALevelSection::GetLocationTuple(int16 X, int16 Y, int16 Z) const {
-	return TTuple<int16, int16, int16>(X, Y, Z);
+TTuple<int16, int16> ALevelSection::GetLocationTuple(int16 X, int16 Y) const {
+	return TTuple<int16, int16>(X, Y);
 }
