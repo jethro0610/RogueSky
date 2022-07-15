@@ -20,11 +20,11 @@ void ALevelSection::BeginPlay() {
 void ALevelSection::CreateSpreadPoints() {
 	for (float x = -GetRadius(); x < GetRadius(); x += spreadSpacing)
 	for (float y = -GetRadius(); y < GetRadius(); y += spreadSpacing) {
-		if (!LocationIsInside(FVector2D(x, y) + GetLocation2D(), 1024.0f))
+		if (!LocationIsInside(FVector2D(x, y) + GetLocation2D(), 2048.0f))
 			continue;
 
-		int16 intX = x / spreadSpacing;
-		int16 intY = y / spreadSpacing;
+		int16 intX = FMath::FloorToInt(x / spreadSpacing);
+		int16 intY = FMath::FloorToInt(y / spreadSpacing);
 		spreadPoints.Add(GetLocationTuple(intX, intY), false);
 	}
 }
@@ -43,7 +43,12 @@ bool ALevelSection::ActivateSpreadPoint(int X, int Y) {
 
 	FTransform instanceTransform;
 	FVector2D pointOrigin = GetLocation2D() + FVector2D(X, Y) * spreadSpacing;
-	instanceTransform.SetLocation(GetLocationOnSurface(pointOrigin));
+	float randomAngle = FMath::Rand();
+	FVector2D randomDireciton = FVector2D(FMath::Cos(randomAngle), FMath::Sin((float)randomAngle));
+	float randomDistance = (FMath::Rand() / (float)RAND_MAX) * spreadSpacing * 0.5f;
+
+	instanceTransform.SetLocation(GetLocationOnSurface(pointOrigin + randomDireciton * randomDistance));
+	instanceTransform.SetRotation(FRotator(0.0f, randomAngle, 0.0f).Quaternion());
 	instancedStaticMesh->AddInstance(instanceTransform);
 
 	return true;

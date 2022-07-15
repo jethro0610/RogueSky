@@ -23,6 +23,7 @@ public:
 
 private:
 	ALevelSection* currentSection = nullptr;
+	int radius = 2;
 
 	UFUNCTION(BlueprintCallable)
 		void SetCurrentSection(ALevelSection* Section) { currentSection = Section; }
