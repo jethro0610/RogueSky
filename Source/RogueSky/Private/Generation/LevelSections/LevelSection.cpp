@@ -9,6 +9,7 @@ ALevelSection::ALevelSection() {
 
 	instancedStaticMesh = CreateDefaultSubobject<UHierarchicalInstancedStaticMeshComponent>("Instanced Mesh");
 	instancedStaticMesh->bDisableCollision = true;
+	instancedStaticMesh->SetCullDistances(10000, 15000);
 }
 
 // Called when the game starts or when spawned
