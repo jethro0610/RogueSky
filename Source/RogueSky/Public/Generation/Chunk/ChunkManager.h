@@ -62,4 +62,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 		bool IsGenerated() const { return bGenerated; }
+
+	UFUNCTION(BlueprintPure)
+		FVector GetNormal(FVector Location) const;
 };

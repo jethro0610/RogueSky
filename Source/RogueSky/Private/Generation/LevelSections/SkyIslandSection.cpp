@@ -77,6 +77,10 @@ FVector ASkyIslandSection::GetLocationOnSurface(FVector2D Point) const {
 	return FVector(Point.X, Point.Y, height);
 }
 
+FVector ASkyIslandSection::GetSurfaceNormal(FVector2D Point) const {
+	return surface.GetNormal(Point);
+}
+
 float ASkyIslandSection::GetEdgeDistanceFromOrigin(FVector2D EdgeDirection) const {
 	return blobMask.GetEdgeDistanceFromOrigin(EdgeDirection);
 }

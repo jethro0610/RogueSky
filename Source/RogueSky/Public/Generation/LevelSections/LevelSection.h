@@ -27,7 +27,7 @@ private:
 		UHierarchicalInstancedStaticMeshComponent* instancedStaticMesh;
 
 	UPROPERTY(EditAnywhere)
-		float spreadSpacing = 150.0f;
+		float spreadSpacing = 100.0f;
 	TMap<TTuple<int16, int16>, bool> spreadPoints;
 	uint16 activatedSpreadCount = 0;
 
@@ -56,6 +56,8 @@ public:
 		virtual bool LocationIsInside(FVector2D Location, float DistanceToEdge = 0.0f) const { return false; }
 	UFUNCTION(BlueprintPure)
 		virtual FVector GetLocationOnSurface(FVector2D Location) const { return FVector::ZeroVector; }
+	UFUNCTION(BlueprintPure)
+		virtual FVector GetSurfaceNormal(FVector2D Point) const { return FVector::ZeroVector; }
 	UFUNCTION(BlueprintPure)
 		virtual float GetEdgeDistanceFromOrigin(FVector2D EdgeDirection) const { return 0.0f; }
 	UFUNCTION(BlueprintPure)

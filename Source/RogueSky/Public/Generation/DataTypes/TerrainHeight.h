@@ -33,6 +33,7 @@ private:
 public:
 	FFloat16 GetHeight(int8 ChunkX, int8 ChunkY, int8 VoxelX, int8 VoxelY) const;
 	FFloat16 GetHeight(FVector2D Point) const;
+	FVector GetNormal(FVector2D Point) const;
 	int8 GetStartChunkZ() const { return startChunkZ; }
 	int8 GetEndChunkZ() const { return endChunkZ; }
 };

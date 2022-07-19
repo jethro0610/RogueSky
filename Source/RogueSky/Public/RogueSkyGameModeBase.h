@@ -28,11 +28,8 @@ public:
 
 private:
 	AChunkManager* chunkManager;
-	ASpreadManager* spreadManager;
 
 public:
 	UFUNCTION(BlueprintPure)
 		AChunkManager* GetChunkManager() const { return chunkManager; }
-	UFUNCTION(BlueprintPure)
-		ASpreadManager* GetSpreadManager() const { return spreadManager; }
 };

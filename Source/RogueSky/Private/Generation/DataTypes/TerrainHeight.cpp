@@ -49,3 +49,14 @@ FFloat16 TerrainHeight::GetHeight(FVector2D Point) const {
     float surfaceHeight = surfaceNosie * maxHeight;
     return startHeight + surfaceHeight + sharedHeight;
 }
+
+FVector TerrainHeight::GetNormal(FVector2D Point) const {
+    float originHeight = GetHeight(Point);
+    float xHeight = GetHeight(Point + FVector2D(10.0f, 0.0f));
+    float yHeight = GetHeight(Point + FVector2D(0.0f, 10.0f));
+
+    FVector xVector = FVector(10.0f, 0.0f, xHeight - originHeight).GetSafeNormal();
+    FVector yVector = FVector(0.0f, 10.0f, yHeight - originHeight).GetSafeNormal();
+
+    return FVector::CrossProduct(xVector, yVector);
+}

@@ -4,6 +4,7 @@
 #include "DrawDebugHelpers.h"
 #include "Generation/Chunk/ChunkMeshProvider.h"
 #include "Generation/Chunk/StitchProvider.h"
+#include "Generation/DataTypes/DistanceField.h"
 
 // Sets default values
 AChunkManager::AChunkManager()
@@ -111,4 +112,13 @@ Chunk* AChunkManager::GetChunk(int8 X, int8 Y, int8 Z) const {
 	return chunks[X][Y][Z];
 }
 
+FVector AChunkManager::GetNormal(FVector Location) const {
+	auto chunkAndVoxelLocation = GenerationConstants::WorldLocationToChunkSpace(Location);
+	Chunk* chunk = GetChunk(chunkAndVoxelLocation.Key);
+
+	if (chunk == nullptr)
+		return FVector::ZeroVector;
+
+	return chunk->distanceField.GetNormal(chunkAndVoxelLocation.Value);
+}
 

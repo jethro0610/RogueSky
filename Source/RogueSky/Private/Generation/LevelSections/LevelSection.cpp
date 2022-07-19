@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Generation/LevelSections/LevelSection.h"
+#include "Generation/Chunk/ChunkManager.h"
 
 // Sets default values
 ALevelSection::ALevelSection() {
@@ -47,9 +48,19 @@ bool ALevelSection::ActivateSpreadPoint(int X, int Y) {
 	float randomAngle = FMath::Rand();
 	FVector2D randomDireciton = FVector2D(FMath::Cos(randomAngle), FMath::Sin((float)randomAngle));
 	float randomDistance = (FMath::Rand() / (float)RAND_MAX) * spreadSpacing * 0.5f;
+	float randomScale = FMath::RandRange(0.3f, 1.0f);
+	float randomHeight = FMath::RandRange(-10.0f, 20.0f);
 
-	instanceTransform.SetLocation(GetLocationOnSurface(pointOrigin + randomDireciton * randomDistance));
-	instanceTransform.SetRotation(FRotator(0.0f, randomAngle, 0.0f).Quaternion());
+	FVector2D spreadPoint = pointOrigin + randomDireciton * randomDistance;
+	FVector spreadLocation = GetLocationOnSurface(spreadPoint);
+	FVector normal = GetSurfaceNormal(spreadPoint);
+
+	float randomPitch = FMath::RandRange(-10.0f, 10.0f);
+	float randomRoll = FMath::RandRange(-10.0f, 10.0f);
+
+	instanceTransform.SetLocation(spreadLocation + FVector(0, 0, randomHeight));
+	instanceTransform.SetRotation(normal.ToOrientationQuat() * FRotator(-90.0f + randomPitch, 0.0f, randomRoll).Quaternion());
+	instanceTransform.SetScale3D(FVector(randomScale));
 	instancedStaticMesh->AddInstance(instanceTransform);
 
 	return true;

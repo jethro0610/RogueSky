@@ -1,5 +1,7 @@
 #pragma once
 #include "GenerationTypes.h"
+#include "CoreMinimal.h"
+
 namespace GenerationConstants {
     // Table of cube corners
     const FIntVector8 cornerTable[8] = {
@@ -74,6 +76,20 @@ namespace GenerationConstants {
 
     static FVector2D ChunkCoordinateToWorld2D(int ChunkX, int ChunkY, int X, int Y) {
         return FVector2D(ChunkX * CHUNK_SIZE + X * VOXEL_SIZE, ChunkY * CHUNK_SIZE + Y * VOXEL_SIZE);
+    }
+
+    static TPair<FIntVector8, FIntVector8> WorldLocationToChunkSpace(FVector WorldLocation) {
+        int8 chunkLocationX = WorldLocation.X / CHUNK_SIZE;
+        int8 chunkLocationY = WorldLocation.Y / CHUNK_SIZE;
+        int8 chunkLocationZ = WorldLocation.Z / CHUNK_SIZE;
+        
+        int8 voxelLocationX = (WorldLocation.X - chunkLocationX * CHUNK_SIZE) / VOXEL_SIZE;
+        int8 voxelLocationY = (WorldLocation.Y - chunkLocationY * CHUNK_SIZE) / VOXEL_SIZE;
+        int8 voxelLocationZ = (WorldLocation.Z - chunkLocationZ * CHUNK_SIZE) / VOXEL_SIZE;
+
+        return TPair<FIntVector8, FIntVector8>(
+            FIntVector8(chunkLocationX, chunkLocationY, chunkLocationZ),
+            FIntVector8(voxelLocationX, voxelLocationY, voxelLocationZ));
     }
 
     static int16 FloatDistanceToCompressed(float Distance) {

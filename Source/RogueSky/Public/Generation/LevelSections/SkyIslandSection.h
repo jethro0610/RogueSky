@@ -51,5 +51,6 @@ public:
 	void Generate() override;
 	bool LocationIsInside(FVector2D Location, float DistanceToEdge = 0.0f) const override;
 	FVector GetLocationOnSurface(FVector2D Location) const override;
+	FVector GetSurfaceNormal(FVector2D Point) const override;
 	float GetEdgeDistanceFromOrigin(FVector2D EdgeDirection) const override;
 };
