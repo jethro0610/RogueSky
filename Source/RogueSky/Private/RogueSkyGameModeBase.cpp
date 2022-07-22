@@ -10,14 +10,20 @@ ARogueSkyGameModeBase::ARogueSkyGameModeBase() {
 }
 
 void ARogueSkyGameModeBase::BeginPlay() {
-	windUpdateDynamic = UMaterialInstanceDynamic::Create(windUpdateMaterial, this);
-	windCopyToBufferDynamic = UMaterialInstanceDynamic::Create(windCopyToBufferMaterial, this);
+	updateVelocityDynamic = UMaterialInstanceDynamic::Create(updateVelocityMaterial, this);
+	updatePositionDynamic = UMaterialInstanceDynamic::Create(updatePositionMaterial, this);
+	copyToBufferDynamic = UMaterialInstanceDynamic::Create(copyToBufferMaterial, this);
 
-	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), windField);
-	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), windBuffer);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentVelocityRT);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), velocityBufferRT);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentPositionRT);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), positionBufferRT);
 
-	windUpdateDynamic->SetTextureParameterValue("Wind Buffer", windBuffer);
-	windCopyToBufferDynamic->SetTextureParameterValue("Texture to Copy", windField);
+	updateVelocityDynamic->SetTextureParameterValue("Velocity Buffer", velocityBufferRT);
+	updateVelocityDynamic->SetTextureParameterValue("Position Buffer", positionBufferRT);
+
+	updatePositionDynamic->SetTextureParameterValue("Velocity Buffer", velocityBufferRT);
+	updatePositionDynamic->SetTextureParameterValue("Position Buffer", positionBufferRT);
 }
 
 void ARogueSkyGameModeBase::PreInitializeComponents() {
@@ -30,11 +36,32 @@ void ARogueSkyGameModeBase::PreInitializeComponents() {
 void ARogueSkyGameModeBase::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), windField, windUpdateDynamic);
-	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), windBuffer, windCopyToBufferDynamic);
+	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), currentVelocityRT, updateVelocityDynamic);
+	copyToBufferDynamic->SetTextureParameterValue("Texture to Copy", currentVelocityRT);
+	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), velocityBufferRT, copyToBufferDynamic);
+
+	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), currentPositionRT, updatePositionDynamic);
+	copyToBufferDynamic->SetTextureParameterValue("Texture to Copy", currentPositionRT);
+	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), positionBufferRT, copyToBufferDynamic);
 }
 
-void ARogueSkyGameModeBase::SetWindOrigin(FVector Location, float Size) {
-	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), windField);
-	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), windBuffer);
+void ARogueSkyGameModeBase::SetRTFieldOrigin(FVector2D Location, float Size) {
+	rtFieldOrigin = Location;
+	rtFieldSize = Size;
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentVelocityRT);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), velocityBufferRT);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentPositionRT);
+	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), positionBufferRT);
+}
+
+FVector2D ARogueSkyGameModeBase::GetPositionInRTField(FVector2D Location, bool& IsInField) const {
+	FVector2D rtPosition =  ((Location - rtFieldOrigin) / rtFieldSize) + FVector2D(0.5f, 0.5f);
+
+	if (rtPosition.X < 0.0f || rtPosition.X > 1.0f || rtPosition.Y < 0.0f || rtPosition.Y > 1.0f) {
+		IsInField = false;
+		return FVector2D::ZeroVector;
+	}
+
+	IsInField = true;
+	return rtPosition;
 }

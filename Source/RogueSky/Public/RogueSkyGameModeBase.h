@@ -32,33 +32,51 @@ public:
 private:
 	AChunkManager* chunkManager;
 
-	FVector windOrigin;
-	float windFieldSize;
+	FVector2D rtFieldOrigin;
+	float rtFieldSize;
 
 	UPROPERTY(EditAnywhere)
-		UTextureRenderTarget2D* windField;
+		UTextureRenderTarget2D* currentVelocityRT;
 	UPROPERTY(EditAnywhere)
-		UTextureRenderTarget2D* windBuffer;
+		UTextureRenderTarget2D* velocityBufferRT;
 
 	UPROPERTY(EditAnywhere)
-		UMaterialInstance* windUpdateMaterial;
+		UTextureRenderTarget2D* currentPositionRT;
+	UPROPERTY(EditAnywhere)
+		UTextureRenderTarget2D* positionBufferRT;
+
+	UPROPERTY(EditAnywhere)
+		UMaterialInstance* updateVelocityMaterial;
 	UPROPERTY()
-		UMaterialInstanceDynamic* windUpdateDynamic;
+		UMaterialInstanceDynamic* updateVelocityDynamic;
 
 	UPROPERTY(EditAnywhere)
-		UMaterialInstance* windCopyToBufferMaterial;
+		UMaterialInstance* updatePositionMaterial;
 	UPROPERTY()
-		UMaterialInstanceDynamic* windCopyToBufferDynamic;
+		UMaterialInstanceDynamic* updatePositionDynamic;
+
+	UPROPERTY(EditAnywhere)
+		UMaterialInstance* copyToBufferMaterial;
+	UPROPERTY()
+		UMaterialInstanceDynamic* copyToBufferDynamic;
 
 public:
 	UFUNCTION(BlueprintPure)
 		AChunkManager* GetChunkManager() const { return chunkManager; }
 
-	UFUNCTION(BlueprintPure)
-		UTextureRenderTarget2D* GetWindField() const { return windField; }
-	UFUNCTION(BlueprintPure)
-		UTextureRenderTarget2D* GetWindBuffer() const { return windBuffer; }
-
 	UFUNCTION(BlueprintCallable)
-		void SetWindOrigin(FVector Location, float Size);
+		void SetRTFieldOrigin(FVector2D Location, float Size);
+
+	UFUNCTION(BlueprintPure)
+		FVector2D GetPositionInRTField(FVector2D Location, bool& bIsInField) const;
+
+	UFUNCTION(BlueprintPure)
+		UTextureRenderTarget2D* GetVelocityBuffer() const { return velocityBufferRT; }
+	UFUNCTION(BlueprintPure)
+		UTextureRenderTarget2D* GetPositionBuffer() const { return positionBufferRT; }
+
+	UFUNCTION(BlueprintPure)
+		UTextureRenderTarget2D* GetCurrentVelocityRT() const { return currentVelocityRT; }
+	UFUNCTION(BlueprintPure)
+		UTextureRenderTarget2D* GetCurrentPositionRT() const { return currentPositionRT; }
 };
