@@ -10,20 +10,12 @@ ARogueSkyGameModeBase::ARogueSkyGameModeBase() {
 }
 
 void ARogueSkyGameModeBase::BeginPlay() {
-	updateVelocityDynamic = UMaterialInstanceDynamic::Create(updateVelocityMaterial, this);
-	updatePositionDynamic = UMaterialInstanceDynamic::Create(updatePositionMaterial, this);
 	copyToBufferDynamic = UMaterialInstanceDynamic::Create(copyToBufferMaterial, this);
 
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentVelocityRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), velocityBufferRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentPositionRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), positionBufferRT);
-
-	updateVelocityDynamic->SetTextureParameterValue("Velocity Buffer", velocityBufferRT);
-	updateVelocityDynamic->SetTextureParameterValue("Position Buffer", positionBufferRT);
-
-	updatePositionDynamic->SetTextureParameterValue("Velocity Buffer", velocityBufferRT);
-	updatePositionDynamic->SetTextureParameterValue("Position Buffer", positionBufferRT);
 }
 
 void ARogueSkyGameModeBase::PreInitializeComponents() {
@@ -36,11 +28,11 @@ void ARogueSkyGameModeBase::PreInitializeComponents() {
 void ARogueSkyGameModeBase::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), currentVelocityRT, updateVelocityDynamic);
+	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), currentVelocityRT, updateVelocityMaterial);
 	copyToBufferDynamic->SetTextureParameterValue("Texture to Copy", currentVelocityRT);
 	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), velocityBufferRT, copyToBufferDynamic);
 
-	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), currentPositionRT, updatePositionDynamic);
+	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), currentPositionRT, updatePositionMaterial);
 	copyToBufferDynamic->SetTextureParameterValue("Texture to Copy", currentPositionRT);
 	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), positionBufferRT, copyToBufferDynamic);
 }

@@ -47,13 +47,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UMaterialInstance* updateVelocityMaterial;
-	UPROPERTY()
-		UMaterialInstanceDynamic* updateVelocityDynamic;
-
 	UPROPERTY(EditAnywhere)
 		UMaterialInstance* updatePositionMaterial;
-	UPROPERTY()
-		UMaterialInstanceDynamic* updatePositionDynamic;
 
 	UPROPERTY(EditAnywhere)
 		UMaterialInstance* copyToBufferMaterial;
