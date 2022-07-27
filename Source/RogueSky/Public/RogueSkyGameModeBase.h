@@ -46,9 +46,9 @@ private:
 		UTextureRenderTarget2D* positionBufferRT;
 
 	UPROPERTY(EditAnywhere)
-		UMaterialInstance* updateVelocityMaterial;
+		UMaterial* updateVelocityMaterial;
 	UPROPERTY(EditAnywhere)
-		UMaterialInstance* updatePositionMaterial;
+		UMaterial* updatePositionMaterial;
 
 	UPROPERTY(EditAnywhere)
 		UMaterialInstance* copyToBufferMaterial;
