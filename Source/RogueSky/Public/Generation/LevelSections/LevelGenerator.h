@@ -42,5 +42,8 @@ public:
 		UAllocator* GetAllocator() const { return allocator; }
 
 	UFUNCTION(BlueprintPure)
-		ALevelSection* GetSectionFromNode(UAllocatorNode* Node) { return nodeSectionMap[Node]; }
+		ALevelSection* GetSectionFromNode(UAllocatorNode* Node) const { return nodeSectionMap[Node]; }
+
+	UFUNCTION(BlueprintPure)
+		ALevelSection* GetSpawnSection() const { return GetSectionFromNode(allocator->GetNodes()[0]); }
 };

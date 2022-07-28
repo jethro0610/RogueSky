@@ -7,6 +7,9 @@
 #include "Gameplay/Level/SpreadManager.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/KismetRenderingLibrary.h"
+#include "Generation/LevelSections/LevelGenerator.h"
+#include "Materials/MaterialParameterCollection.h"
+#include "Materials/MaterialParameterCollectionInstance.h"
 #include "RogueSkyGameModeBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FFixedTickDelegate);
@@ -31,9 +34,10 @@ public:
 
 private:
 	AChunkManager* chunkManager;
+	ALevelGenerator* levelGenerator;
 
-	FVector2D rtFieldOrigin;
-	float rtFieldSize;
+	FVector2D elasticFieldOrigin;
+	float elasticFieldSize = 18432.0f;
 
 	UPROPERTY(EditAnywhere)
 		UTextureRenderTarget2D* currentVelocityRT;
@@ -55,15 +59,44 @@ private:
 	UPROPERTY()
 		UMaterialInstanceDynamic* copyToBufferDynamic;
 
+	UPROPERTY(EditAnywhere)
+		UMaterialParameterCollection* elasticFieldCollection;
+
+	UMaterialParameterCollectionInstance* elasticFieldProperties;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AActor> playerClass;
+
+	AActor* player = nullptr;
+	ALevelSection* currentSection = nullptr;
+
+private:
+	UFUNCTION()
+		void OnDoneGenerating();
+
+	UFUNCTION()
+		void OnPlayerOverlap(UPrimitiveComponent* OverlappedComp,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult& SweepResult);
+
 public:
 	UFUNCTION(BlueprintPure)
 		AChunkManager* GetChunkManager() const { return chunkManager; }
 
+	UFUNCTION(BlueprintPure)
+		ALevelGenerator* GetLevelGenerator() const { return levelGenerator; }
+
 	UFUNCTION(BlueprintCallable)
-		void SetRTFieldOrigin(FVector2D Location, float Size);
+		void SetElasticFieldOrigin(FVector2D Location);
 
 	UFUNCTION(BlueprintPure)
-		FVector2D GetPositionInRTField(FVector2D Location, bool& bIsInField) const;
+		void GetPositionInElasticField(FVector2D Location, bool& bIsInField, FVector2D& PositionInField) const;
+
+	UFUNCTION(BlueprintPure)
+		float GetElasticFieldSize() const { return elasticFieldSize; }
 
 	UFUNCTION(BlueprintPure)
 		UTextureRenderTarget2D* GetVelocityBuffer() const { return velocityBufferRT; }
@@ -74,4 +107,7 @@ public:
 		UTextureRenderTarget2D* GetCurrentVelocityRT() const { return currentVelocityRT; }
 	UFUNCTION(BlueprintPure)
 		UTextureRenderTarget2D* GetCurrentPositionRT() const { return currentPositionRT; }
+
+	UFUNCTION(BlueprintCallable)
+		void SetCurrentSection(ALevelSection* Section);
 };

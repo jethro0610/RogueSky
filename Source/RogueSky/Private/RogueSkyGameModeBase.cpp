@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
-
 #include "RogueSkyGameModeBase.h"
+#include "Generation/LevelSections/LevelSection.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 ARogueSkyGameModeBase::ARogueSkyGameModeBase() {
@@ -16,12 +15,18 @@ void ARogueSkyGameModeBase::BeginPlay() {
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), velocityBufferRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentPositionRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), positionBufferRT);
+	elasticFieldProperties = GetWorld()->GetParameterCollectionInstance(elasticFieldCollection);
+	elasticFieldProperties->SetScalarParameterValue("Size", elasticFieldSize);
+
+	levelGenerator->GenerateLevel();
+	chunkManager->OnDoneGenerating.AddDynamic(this, &ARogueSkyGameModeBase::OnDoneGenerating);
 }
 
 void ARogueSkyGameModeBase::PreInitializeComponents() {
 	Super::PreInitializeComponents();
 	
 	chunkManager = Cast<AChunkManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AChunkManager::StaticClass()));
+	levelGenerator = Cast<ALevelGenerator>(UGameplayStatics::GetActorOfClass(GetWorld(), ALevelGenerator::StaticClass()));
 }
 
 // Called every frame
@@ -37,23 +42,45 @@ void ARogueSkyGameModeBase::Tick(float DeltaTime) {
 	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), positionBufferRT, copyToBufferDynamic);
 }
 
-void ARogueSkyGameModeBase::SetRTFieldOrigin(FVector2D Location, float Size) {
-	rtFieldOrigin = Location;
-	rtFieldSize = Size;
+void ARogueSkyGameModeBase::SetElasticFieldOrigin(FVector2D Location) {
+	elasticFieldOrigin = Location;
+	elasticFieldProperties->SetVectorParameterValue("Origin", FVector4(Location.X, Location.Y, 0.0f, 0.0f));
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentVelocityRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), velocityBufferRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), currentPositionRT);
 	UKismetRenderingLibrary::ClearRenderTarget2D(GetWorld(), positionBufferRT);
 }
 
-FVector2D ARogueSkyGameModeBase::GetPositionInRTField(FVector2D Location, bool& IsInField) const {
-	FVector2D rtPosition =  ((Location - rtFieldOrigin) / rtFieldSize) + FVector2D(0.5f, 0.5f);
+void ARogueSkyGameModeBase::GetPositionInElasticField(FVector2D Location, bool& bIsInField, FVector2D& PositionInField) const {
+	PositionInField =  ((Location - elasticFieldOrigin) / elasticFieldSize) + FVector2D(0.5f, 0.5f);
 
-	if (rtPosition.X < 0.0f || rtPosition.X > 1.0f || rtPosition.Y < 0.0f || rtPosition.Y > 1.0f) {
-		IsInField = false;
-		return FVector2D::ZeroVector;
+	if (PositionInField.X < 0.0f || PositionInField.X > 1.0f || PositionInField.Y < 0.0f || PositionInField.Y > 1.0f) {
+		bIsInField = false;
+		PositionInField = FVector2D::ZeroVector;
 	}
 
-	IsInField = true;
-	return rtPosition;
+	bIsInField = true;
+}
+
+void ARogueSkyGameModeBase::SetCurrentSection(ALevelSection* Section) {
+	currentSection = Section;
+	SetElasticFieldOrigin(currentSection->GetLocation2D());
+}
+
+void ARogueSkyGameModeBase::OnDoneGenerating() {
+	SetCurrentSection(levelGenerator->GetSpawnSection());
+	player = GetWorld()->SpawnActor<AActor>(playerClass, currentSection->GetSurfaceOrigin(), FRotator::ZeroRotator);
+	player->FindComponentByClass<UPrimitiveComponent>()->OnComponentBeginOverlap.AddDynamic(this, &ARogueSkyGameModeBase::OnPlayerOverlap);
+}
+
+void ARogueSkyGameModeBase::OnPlayerOverlap(UPrimitiveComponent* OverlappedComp,
+AActor* OtherActor,
+UPrimitiveComponent* OtherComp,
+int32 OtherBodyIndex,
+bool bFromSweep,
+const FHitResult& SweepResult) {
+	if (OtherComp->GetCollisionProfileName() == "LevelSection") {
+		ALevelSection* section = Cast<ALevelSection>(OtherActor);
+		SetCurrentSection(section);
+	}
 }
