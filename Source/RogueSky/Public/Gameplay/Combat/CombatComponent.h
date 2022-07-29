@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "Hitbox.h"
 #include "Hurtbox.h"
-#include "Projectile.h"
 #include "CombatComponent.generated.h"
 
 
@@ -45,5 +44,4 @@ public:
 		FLandAttackDelegate OnLandAttack;
 	bool IsInHitlag() const { return hitlag > 0.0f; }
 	UHitbox* SpawnHitbox(USceneComponent* Parent, FHitboxTransform HitboxTransform, FHitboxInfo HitboxInfo);
-	AProjectile* SpawnProjectile(TSubclassOf<AProjectile> Class, FVector Offset);
 };

@@ -25,19 +25,6 @@ UHitbox* UCombatComponent::SpawnHitbox(USceneComponent* Parent, FHitboxTransform
 	return spawnedHitbox;
 }
 
-AProjectile* UCombatComponent::SpawnProjectile( TSubclassOf<AProjectile> Class, FVector Offset) {
-	FVector spawnOffset =
-		GetOwner()->GetActorRightVector() * Offset.X +
-		GetOwner()->GetActorForwardVector() * Offset.Y +
-		GetOwner()->GetActorUpVector() * Offset.Z;
-
-	FVector spawnLocation = GetOwner()->GetActorLocation() + spawnOffset;
-	AProjectile* spawnedProjectile = (AProjectile*) GetWorld()->SpawnActor(Class.Get(), &spawnLocation);
-	spawnedProjectile->SetCombatComponent(this);
-
-	return spawnedProjectile;
-}
-
 bool UCombatComponent::OnHitboxContactHurtbox(UHitbox* Hitbox, UHurtbox* Hurtbox) {
 	if (Hurtbox->GetCombatComponent() != nullptr) {
 		if (Hurtbox->GetCombatComponent()->contactedHitboxes.Contains(Hitbox))
