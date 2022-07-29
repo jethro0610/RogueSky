@@ -107,6 +107,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		UTextureRenderTarget2D* GetCurrentPositionRT() const { return currentPositionRT; }
 
+
+	UFUNCTION(BlueprintPure)
+		ALevelSection* GetCurrentSection() const { return currentSection; }
 	UFUNCTION(BlueprintCallable)
 		void SetCurrentSection(ALevelSection* Section);
 };

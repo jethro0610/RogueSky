@@ -64,6 +64,8 @@ public:
 		FVector GetSurfaceOrigin() const { return GetLocationOnSurface(GetLocation2D()); }
 	UFUNCTION(BlueprintPure)
 		float GetRadius() const { return sectionArea->GetUnscaledSphereRadius(); }
+	UFUNCTION(BlueprintPure)
+		float GetSpreadPercent() const { return (float)activatedSpreadCount / spreadPoints.Num(); }
 
 	const TMap<FIntVector8, DistanceField*>& GetDistanceFields() const { return distanceFields; }
 };
