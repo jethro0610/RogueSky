@@ -69,7 +69,7 @@ void ARogueSkyGameModeBase::SetCurrentSection(ALevelSection* Section) {
 
 void ARogueSkyGameModeBase::OnDoneGenerating() {
 	SetCurrentSection(levelGenerator->GetSpawnSection());
-	player = GetWorld()->SpawnActor<AActor>(playerClass, currentSection->GetSurfaceOrigin() + FVector(0.0f, 0.0f, 48.0f), FRotator::ZeroRotator);
+	player = GetWorld()->SpawnActor<AActor>(playerClass, currentSection->GetSurfaceOrigin() + FVector(0.0f, 0.0f, 150.0f), FRotator::ZeroRotator);
 	player->FindComponentByClass<UPrimitiveComponent>()->OnComponentBeginOverlap.AddDynamic(this, &ARogueSkyGameModeBase::OnPlayerOverlap);
 }
 
