@@ -7,6 +7,7 @@
 #include "Generation/LevelSections/LevelSection.h"
 #include "SpreadActivator.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActivateSpread, uint8, NumOfSpreads);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ROGUESKY_API USpreadActivator : public UActorComponent {
@@ -19,7 +20,10 @@ private:
 	void BeginPlay() override;
 
 public:	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnActivateSpread OnActivateSpread;
 
 private:
 	ALevelSection* currentSection = nullptr;

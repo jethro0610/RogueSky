@@ -69,8 +69,9 @@ void ARogueSkyGameModeBase::SetCurrentSection(ALevelSection* Section) {
 
 void ARogueSkyGameModeBase::OnDoneGenerating() {
 	SetCurrentSection(levelGenerator->GetSpawnSection());
-	player = GetWorld()->SpawnActor<AActor>(playerClass, currentSection->GetSurfaceOrigin() + FVector(0.0f, 0.0f, 150.0f), FRotator::ZeroRotator);
-	player->FindComponentByClass<UPrimitiveComponent>()->OnComponentBeginOverlap.AddDynamic(this, &ARogueSkyGameModeBase::OnPlayerOverlap);
+	AActor* spawnedPlayer = SpawnPlayer(currentSection->GetSurfaceOrigin());
+	//player = GetWorld()->SpawnActor<AActor>(playerClass, currentSection->GetSurfaceOrigin() + FVector(0.0f, 0.0f, 150.0f), FRotator::ZeroRotator);
+	spawnedPlayer->FindComponentByClass<UPrimitiveComponent>()->OnComponentBeginOverlap.AddDynamic(this, &ARogueSkyGameModeBase::OnPlayerOverlap);
 }
 
 void ARogueSkyGameModeBase::OnPlayerOverlap(UPrimitiveComponent* OverlappedComp,
@@ -83,4 +84,14 @@ const FHitResult& SweepResult) {
 		ALevelSection* section = Cast<ALevelSection>(OtherActor);
 		SetCurrentSection(section);
 	}
+}
+
+void ARogueSkyGameModeBase::AddToTokenMeter(int Amount) {
+	tokenMeterCount += Amount;
+	if (tokenMeterCount > maxMeterTillToken) {
+		tokenMeterCount = 0;
+		tokens++;
+		OnUpdateTokens.Broadcast(tokens);
+	}
+	OnUpdateTokenMeter.Broadcast(GetTokenMeterPercent());
 }

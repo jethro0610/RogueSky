@@ -24,12 +24,19 @@ void USpreadActivator::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	FVector2D offsetVector = FVector2D(GetOwner()->GetActorLocation()) - currentSection->GetLocation2D();
 	offsetVector /= currentSection->GetSpreadSpacing();
+
+	int numActivated = 0;
 	for (int x = -radius; x <= radius; x++)
 	for (int y = -radius; y <= radius; y++) {
 		if (x * x + y * y > radius * radius)
 			continue;
-		currentSection->ActivateSpreadPoint((int)offsetVector.X + x, (int)offsetVector.Y + y);
+		
+		if (currentSection->ActivateSpreadPoint((int)offsetVector.X + x, (int)offsetVector.Y + y))
+			numActivated++;
 	}
+
+	if (numActivated > 0)
+		OnActivateSpread.Broadcast(numActivated);
 }
 
 void USpreadActivator::OnOverlap(UPrimitiveComponent* OverlappedComp, 
